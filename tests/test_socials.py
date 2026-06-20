@@ -69,3 +69,12 @@ def test_find_social_http_error():
 def test_find_social_missing_keys():
     assert find_social(BIZ, "", "cx", get=make_get({"items": []})) == (None, None, "none")
     assert find_social(BIZ, "k", "", get=make_get({"items": []})) == (None, None, "none")
+
+def test_find_social_instagram_wins_when_both_present():
+    # IG-first: Instagram is preferred even when Facebook is listed first.
+    payload = {"items": [
+        {"link": "https://www.facebook.com/dagreencoffee", "title": "Da Green Coffee Bar"},
+        {"link": "https://www.instagram.com/dagreencoffeebar/", "title": "Da Green Coffee Bar"}]}
+    url, plat, conf = find_social(BIZ, "k", "cx", get=make_get(payload))
+    assert plat == "instagram"
+    assert "instagram.com/dagreencoffeebar" in url
