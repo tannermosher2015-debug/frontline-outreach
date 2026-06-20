@@ -21,6 +21,7 @@ class Business:
     rating: float = 0.0
     review_count: int = 0
     business_status: str = "OPERATIONAL"
+    social_confidence: str = ""   # "high" | "low" | "" (set by social lookup)
 
 @dataclass
 class Findings:

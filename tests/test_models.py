@@ -16,3 +16,7 @@ def test_lead_holds_parts():
     lead = Lead(business=b, findings=f, score=30, summary="No website")
     assert lead.channel == ""
     assert lead.business.name == "Y"
+
+def test_business_has_social_confidence_default():
+    b = Business(place_id="p", name="N")
+    assert b.social_confidence == ""
