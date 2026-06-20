@@ -1,5 +1,5 @@
 import re
-from datetime import date, datetime, timezone
+from datetime import date
 from pathlib import Path
 import requests
 from . import store
@@ -41,7 +41,7 @@ def resend_transport(cfg, api_key, to, subject, body):
     return True
 
 def send_email_lead(conn, place_id, cfg, api_key, run_date=None, _transport=None):
-    run_date = run_date or datetime.now(timezone.utc).date().isoformat()
+    run_date = run_date or date.today().isoformat()
     row = _lead_row(conn, place_id)
     if not row or not row.get("email"):
         return {"mode": "no_email"}

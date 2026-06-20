@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime
 from .models import Business
 
 SCHEMA = """
@@ -25,7 +25,9 @@ CREATE TABLE IF NOT EXISTS suppression (
 """
 
 def _now():
-    return datetime.now(timezone.utc).isoformat()
+    # Local time on purpose: this is a Hawaii-based daily tool, so "today's batch"
+    # and the daily send cap must align with the operator's local day, not UTC.
+    return datetime.now().isoformat()
 
 def connect(db_path):
     conn = sqlite3.connect(db_path)
