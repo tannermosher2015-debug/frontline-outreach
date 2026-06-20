@@ -1,0 +1,30 @@
+batch_size = 10
+weak_google_threshold = 15
+daily_email_cap = 10
+send_mode = "dry_run"          # dry_run | live
+provider = "resend"            # resend | smtp
+from_email = "tanner@frontlinewebdesign.tech"
+from_name = "Tanner - Frontline Web Designs"
+reply_to = "tanner@frontlinewebdesign.tech"
+db_path = "outreach.sqlite"
+outbox_dir = "outbox"
+
+towns = ["Kahului", "Kihei", "Wailuku", "Lahaina", "Paia", "Makawao"]
+categories = ["restaurants", "landscapers", "auto repair", "hair salons", "general contractors", "fitness studios", "coffee shops"]
+
+[weights]
+no_website = 30
+social_only = 25
+outdated_website = 20
+bad_mobile = 20
+no_contact_button = 15
+weak_google = 15
+no_service_pages = 10
+broken_links = 10
+old_photos = 5
+
+[audit]
+broken_link_sample = 10
+request_timeout = 8
+outdated_year_gap = 3
+old_photo_year_gap = 4
