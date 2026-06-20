@@ -35,9 +35,8 @@ def looks_outdated(html, soup, current_year, gap):
     reasons = []
     if not has_viewport(soup):
         reasons.append("no_viewport")
-    if soup.find("font") or soup.find("center") or soup.find_all("table"):
-        if soup.find("font") or soup.find("center"):
-            reasons.append("deprecated_tags")
+    if soup.find("font") or soup.find("center"):
+        reasons.append("deprecated_tags")
     for m in re.findall(r"(?:copyright|\(c\)|©)\s*(\d{4})", html, re.I):
         if int(m) <= current_year - gap:
             reasons.append("old_copyright")
