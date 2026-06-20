@@ -118,10 +118,11 @@ suppression (
 `businesses` is the system of record for never-repeat. A re-run that re-discovers a known
 `place_id` is dropped before auditing.
 
-## 6. The 8 signals (audit)
+## 6. The weak-presence signals (audit)
 
-`audit.py` returns a findings object. Reliability is stated honestly — strong/good signals
-drive the score; fuzzy ones are flagged for human review, not trusted blindly.
+The 8 target criteria, with "old photos or broken links" split into two separate checks → 9
+detections. `audit.py` returns a findings object. Reliability is stated honestly — strong/good
+signals drive the score; fuzzy ones are flagged for human review, not trusted blindly.
 
 | Signal | Detection | Reliability |
 |---|---|---|
@@ -129,6 +130,7 @@ drive the score; fuzzy ones are flagged for human review, not trusted blindly.
 | `social_only` | No real site, or `websiteUri` host is instagram.com / facebook.com | strong |
 | `weak_google` | `userRatingCount` < threshold (default 15) and/or low `rating` | strong |
 | `no_contact_button` | Fetched site has no `tel:`, no `mailto:`, no Contact link/form | good |
+| `no_service_pages` | Nav/sitemap lacks service/menu/offerings pages; single thin page | good/heuristic |
 | `outdated_website` | No `<meta viewport>`, stale footer copyright (≤ year−3), deprecated tags (`<font>`/`<center>`), no HTTPS, jQuery 1.x | heuristic |
 | `bad_mobile` | No responsive viewport / fixed-width layout (static-HTML heuristic) | heuristic |
 | `broken_links` | Sample internal+external links, HEAD-check for 404s (capped count) | good |
