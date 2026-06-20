@@ -21,4 +21,7 @@ button.skip { color:var(--warn); }
 :focus-visible { outline:3px solid #0b6; outline-offset:2px; }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 .status { color:#555; font-size:.9rem; }
+table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:8px; }
+th, td { text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--line); }
+thead th { background:#f0ede6; }
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
