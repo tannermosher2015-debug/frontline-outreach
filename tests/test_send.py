@@ -12,6 +12,19 @@ def seed(conn, pid="p1", email="joe@x.com"):
                 summary="x", channel="email", subject="Hi Joe", draft="Aloha Joe")
     store.save_lead(conn, lead, "2026-06-19")
 
+def test_already_sent_lead_is_not_resent(tmp_path):
+    # Regression: spec requires one email per business ever. A second send attempt
+    # on an already-sent lead must not call the transport again.
+    conn = store.connect(":memory:"); store.init_db(conn)
+    seed(conn)
+    store.mark_contacted(conn, "p1", "email")  # send_status -> 'sent'
+    cfg = dict(CFG, send_mode="live", outbox_dir=str(tmp_path / "o"))
+    calls = []
+    res = send.send_email_lead(conn, "p1", cfg, api_key="k", run_date="2026-06-19",
+                               _transport=lambda *a, **k: calls.append(1) or True)
+    assert res["mode"] == "already_sent"
+    assert calls == []
+
 def test_dry_run_writes_eml_and_does_not_send(tmp_path):
     conn = store.connect(":memory:"); store.init_db(conn)
     seed(conn)

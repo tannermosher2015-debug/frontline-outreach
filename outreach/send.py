@@ -12,7 +12,7 @@ def _lead_row(conn, place_id, run_date):
             return r
     # fall back: search any run_date
     cur = conn.execute(
-        """SELECT b.place_id,b.name,b.email,o.subject,o.draft_text
+        """SELECT b.place_id,b.name,b.email,b.status,o.subject,o.draft_text,o.send_status
            FROM businesses b JOIN outreach o ON o.business_id=b.place_id
            WHERE b.place_id=?""", (place_id,))
     row = cur.fetchone()
@@ -48,6 +48,10 @@ def send_email_lead(conn, place_id, cfg, api_key, run_date=None, _transport=None
     to = row["email"]
     if store.is_suppressed(conn, to):
         return {"mode": "skipped_suppressed"}
+    # Never email the same business twice (spec: one email per business ever).
+    # A confirmed send sets send_status='sent'; guard against repeat clicks / re-runs.
+    if row.get("send_status") == "sent":
+        return {"mode": "already_sent"}
 
     subject = row.get("subject") or ""
     body = row.get("draft_text") or ""
