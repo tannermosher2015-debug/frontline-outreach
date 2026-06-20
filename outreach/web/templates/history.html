@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outreach History</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}"></head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><h1>History</h1><p><a href="/">Back to today</a></p></header>
+  <main id="main">
+    <table>
+      <thead><tr><th>Business</th><th>Town</th><th>Status</th><th>Channel</th><th>When</th></tr></thead>
+      <tbody>
+      {% for r in rows %}
+        <tr><td>{{ r.name }}</td><td>{{ r.town }}</td><td>{{ r.status }}</td>
+            <td>{{ r.channel }}</td><td>{{ r.contacted_at }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </main>
+</body>
+</html>

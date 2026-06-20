@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Frontline Outreach - {{ today }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <h1>Today's Leads</h1>
+    <p>{{ today }} - {{ sent }}/{{ total }} contacted - <a href="/history">History</a></p>
+  </header>
+  <main id="main">
+    {% for l in leads %}
+    <article class="card" data-id="{{ l.place_id }}" data-channel="{{ l.channel }}">
+      <div class="card-head">
+        <h2>{{ l.name }}</h2>
+        <span class="score" aria-label="Opportunity score">{{ l.score }}</span>
+      </div>
+      <p class="meta">{{ l.category }} - {{ l.town }} - <span class="channel">{{ l.channel }}</span></p>
+      <ul class="chips">{% for p in l.problems %}<li>{{ p|replace('_',' ') }}</li>{% endfor %}</ul>
+      <label class="sr-only" for="draft-{{ l.place_id }}">Outreach draft for {{ l.name }}</label>
+      <textarea id="draft-{{ l.place_id }}" class="draft">{{ l.draft_text }}</textarea>
+      <p class="contact">
+        {% if l.channel == 'email' %}Email: {{ l.email }}
+        {% elif l.channel == 'dm' %}<a href="{{ l.instagram or l.facebook }}" target="_blank" rel="noopener">Open profile</a>
+        {% elif l.channel == 'phone' %}Call: {{ l.phone }}{% endif %}
+      </p>
+      <div class="actions">
+        <button class="copy">Copy</button>
+        {% if l.channel == 'email' %}<button class="send">Approve &amp; Send</button>{% endif %}
+        <button class="contacted">Mark contacted</button>
+        <button class="skip">Skip</button>
+        <span class="status" role="status">{{ l.status }}</span>
+      </div>
+    </article>
+    {% else %}
+    <p>No leads yet today. Run <code>python -m outreach run</code>.</p>
+    {% endfor %}
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
