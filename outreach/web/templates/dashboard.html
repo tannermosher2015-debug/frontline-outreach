@@ -26,6 +26,7 @@
       <p class="contact">
         {% if l.channel == 'email' %}Email: {{ l.email }}
         {% elif l.channel == 'dm' %}<a href="{{ l.instagram or l.facebook }}" target="_blank" rel="noopener">Open profile</a>
+          {% if l.social_confidence == 'low' %}<span class="verify" role="note" aria-label="Verify this is the right account">&#9888; verify account</span>{% elif l.social_confidence == 'high' %}<span class="ok" aria-label="High confidence match">&#10003;</span>{% endif %}
         {% elif l.channel == 'phone' %}Call: {{ l.phone }}{% endif %}
       </p>
       <div class="actions">

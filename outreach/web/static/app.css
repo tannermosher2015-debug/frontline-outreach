@@ -25,3 +25,5 @@ table { width:100%; border-collapse:collapse; background:#fff; border:1px solid 
 th, td { text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--line); }
 thead th { background:#f0ede6; }
 @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+.verify { color: var(--warn); font-size:.85rem; margin-left:.4rem; }
+.ok { color: var(--accent); font-size:.85rem; margin-left:.4rem; }

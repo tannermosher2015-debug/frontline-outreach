@@ -38,3 +38,31 @@ def test_send_action_dry_run(tmp_path):
     c, conn = client_with_lead(tmp_path)
     resp = c.post("/action/send", json={"place_id": "p1"})
     assert resp.get_json()["mode"] == "dry_run"
+
+def test_dm_lead_low_confidence_shows_verify(tmp_path):
+    conn = store.connect(":memory:"); store.init_db(conn)
+    b = Business(place_id="s1", name="Da Green", town="Kihei",
+                 instagram="https://instagram.com/dagreen", social_confidence="low")
+    store.save_lead(conn, Lead(business=b, findings=Findings(no_website=True, social_only=True),
+                               score=55, summary="no website", channel="dm",
+                               subject="", draft="Aloha"), "2026-06-19")
+    cfg = dict(CFG, outbox_dir=str(tmp_path / "o"))
+    app = server.create_app(cfg, conn=conn, today="2026-06-19", api_key="k")
+    app.config.update(TESTING=True)
+    resp = app.test_client().get("/")
+    assert resp.status_code == 200
+    assert b"verify" in resp.data.lower()
+    assert b"Open profile" in resp.data
+
+def test_dm_lead_high_confidence_no_verify(tmp_path):
+    conn = store.connect(":memory:"); store.init_db(conn)
+    b = Business(place_id="s2", name="Kraken", town="Kihei",
+                 instagram="https://instagram.com/kraken", social_confidence="high")
+    store.save_lead(conn, Lead(business=b, findings=Findings(no_website=True, social_only=True),
+                               score=55, summary="no website", channel="dm",
+                               subject="", draft="Aloha"), "2026-06-19")
+    cfg = dict(CFG, outbox_dir=str(tmp_path / "o"))
+    app = server.create_app(cfg, conn=conn, today="2026-06-19", api_key="k")
+    app.config.update(TESTING=True)
+    resp = app.test_client().get("/")
+    assert b"verify" not in resp.data.lower()
