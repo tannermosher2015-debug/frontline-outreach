@@ -1,5 +1,24 @@
+import threading
+
 from outreach import store
 from outreach.models import Business, Findings, Lead
+
+def test_connection_usable_across_threads(tmp_path):
+    # Regression: the Flask dashboard serves each request on a worker thread.
+    # store.connect must allow cross-thread use (check_same_thread=False), or every
+    # dashboard request 500s with "SQLite objects created in a thread...".
+    conn = store.connect(str(tmp_path / "t.sqlite"))
+    store.init_db(conn)
+    errors = []
+    def work():
+        try:
+            store.upsert_business(conn, Business(place_id="p1", name="X"))
+            assert store.is_seen(conn, "p1") is True
+        except Exception as e:  # noqa: BLE001
+            errors.append(e)
+    t = threading.Thread(target=work)
+    t.start(); t.join()
+    assert errors == []
 
 def fresh_conn():
     conn = store.connect(":memory:")

@@ -30,7 +30,10 @@ def _now():
     return datetime.now().isoformat()
 
 def connect(db_path):
-    conn = sqlite3.connect(db_path)
+    # check_same_thread=False: the Flask dev server handles each request on its own
+    # worker thread, but this is a single-user local tool, so one shared connection
+    # is fine (sqlite3 serializes access). Without this, every dashboard request 500s.
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 
