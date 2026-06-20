@@ -6,8 +6,8 @@ from . import store
 
 RESEND_URL = "https://api.resend.com/emails"
 
-def _lead_row(conn, place_id):
-    for r in store.todays_batch(conn, date.today().isoformat()):
+def _lead_row(conn, place_id, run_date):
+    for r in store.todays_batch(conn, run_date):
         if r["place_id"] == place_id:
             return r
     # fall back: search any run_date
@@ -42,7 +42,7 @@ def resend_transport(cfg, api_key, to, subject, body):
 
 def send_email_lead(conn, place_id, cfg, api_key, run_date=None, _transport=None):
     run_date = run_date or date.today().isoformat()
-    row = _lead_row(conn, place_id)
+    row = _lead_row(conn, place_id, run_date)
     if not row or not row.get("email"):
         return {"mode": "no_email"}
     to = row["email"]
