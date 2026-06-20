@@ -1,6 +1,7 @@
 LABELS = {
     "no_website": "no website",
     "social_only": "social media only",
+    "site_unreachable": "website is down",
     "weak_google": "weak Google presence",
     "no_contact_button": "no contact button",
     "no_service_pages": "no service pages",

@@ -15,6 +15,7 @@ categories = ["restaurants", "landscapers", "auto repair", "hair salons", "gener
 [weights]
 no_website = 30
 social_only = 25
+site_unreachable = 30
 outdated_website = 20
 bad_mobile = 20
 no_contact_button = 15

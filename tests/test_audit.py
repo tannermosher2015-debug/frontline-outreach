@@ -91,3 +91,15 @@ def test_audit_business_with_site_uses_fetch():
     assert f.no_website is False
     assert f.no_contact_button is False
     assert f.weak_google is False
+
+def test_audit_business_unreachable_site_is_a_scored_signal():
+    # A real site that fails to fetch is a hot lead ("a broken or dead site"), not a
+    # drop. site_unreachable must be a scored signal so the pipeline keeps it even
+    # when reviews are strong (weak_google off).
+    b = Business(place_id="u1", name="Dead", website="https://dead.example", review_count=100)
+    def boom(url, timeout):
+        raise Exception("timeout")
+    f = audit_business(b, config={"weak_google_threshold": 15, "audit": {}},
+                       fetch=boom, current_year=2026)
+    assert f.site_unreachable is True
+    assert "site_unreachable" in f.fired()

@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
 
 SIGNALS = [
-    "no_website", "social_only", "weak_google", "no_contact_button",
-    "no_service_pages", "outdated_website", "bad_mobile",
+    "no_website", "social_only", "site_unreachable", "weak_google",
+    "no_contact_button", "no_service_pages", "outdated_website", "bad_mobile",
     "broken_links", "old_photos",
 ]
 
