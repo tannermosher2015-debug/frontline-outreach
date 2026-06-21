@@ -35,3 +35,20 @@ pytest -q
 
 Edit `config.toml`: target towns/categories, scoring weights, `daily_email_cap`,
 `send_mode`, provider. Secrets live in `.env` (never committed).
+
+## Social lookup (optional)
+
+For no-website leads, the tool can find the business's Instagram/Facebook handle via
+Google's Custom Search JSON API and show it in the dashboard (DMs stay manual).
+
+1. Google Cloud -> enable **Custom Search API** (can reuse your Places project/key).
+2. Create a **Programmable Search Engine** that searches the entire web -> copy its **CX** id.
+3. Add to `.env`:
+   ```
+   GOOGLE_CSE_KEY=your-key
+   GOOGLE_CSE_CX=your-cx-id
+   ```
+4. In `config.toml`, keep `[socials] enabled = true`.
+
+Free for 100 searches/day (the run uses at most one per social lead, capped at your
+`batch_size`). Set `enabled = false` to turn it off — the tool runs fine without it.

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS businesses (
   place_id TEXT PRIMARY KEY, name TEXT, category TEXT, town TEXT,
   address TEXT, phone TEXT, website TEXT, email TEXT,
   instagram TEXT, facebook TEXT, rating REAL, review_count INTEGER,
-  status TEXT DEFAULT 'new', first_seen TEXT
+  status TEXT DEFAULT 'new', first_seen TEXT, social_confidence TEXT DEFAULT ''
 );
 CREATE TABLE IF NOT EXISTS audits (
   id INTEGER PRIMARY KEY AUTOINCREMENT, business_id TEXT, run_date TEXT,
@@ -39,21 +39,27 @@ def connect(db_path):
 
 def init_db(conn):
     conn.executescript(SCHEMA)
+    try:
+        conn.execute("ALTER TABLE businesses ADD COLUMN social_confidence TEXT DEFAULT ''")
+    except sqlite3.OperationalError:
+        pass  # column already exists — fresh DBs and re-runs both land here
     conn.commit()
 
 def upsert_business(conn, b: Business):
     conn.execute(
         """INSERT INTO businesses
            (place_id,name,category,town,address,phone,website,email,
-            instagram,facebook,rating,review_count,status,first_seen)
-           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,'new',?)
+            instagram,facebook,rating,review_count,social_confidence,status,first_seen)
+           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,'new',?)
            ON CONFLICT(place_id) DO UPDATE SET
              name=excluded.name, phone=excluded.phone, website=excluded.website,
              email=excluded.email, instagram=excluded.instagram,
              facebook=excluded.facebook, rating=excluded.rating,
-             review_count=excluded.review_count""",
+             review_count=excluded.review_count,
+             social_confidence=excluded.social_confidence""",
         (b.place_id, b.name, b.category, b.town, b.address, b.phone, b.website,
-         b.email, b.instagram, b.facebook, b.rating, b.review_count, _now()),
+         b.email, b.instagram, b.facebook, b.rating, b.review_count,
+         b.social_confidence, _now()),
     )
     conn.commit()
 
@@ -82,7 +88,7 @@ def save_lead(conn, lead, run_date):
 def todays_batch(conn, run_date):
     cur = conn.execute(
         """SELECT b.place_id, b.name, b.category, b.town, b.phone, b.website,
-                  b.email, b.instagram, b.facebook, b.status,
+                  b.email, b.instagram, b.facebook, b.status, b.social_confidence,
                   a.score, a.summary, a.findings,
                   o.channel, o.subject, o.draft_text, o.contacted_at, o.send_status
            FROM audits a

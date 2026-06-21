@@ -68,3 +68,29 @@ def test_suppression():
     assert store.is_suppressed(conn, "x@y.com") is False
     store.add_suppression(conn, "x@y.com", reason="opt-out")
     assert store.is_suppressed(conn, "x@y.com") is True
+
+def test_social_confidence_roundtrips():
+    conn = fresh_conn()
+    lead = make_lead()
+    lead.business.instagram = "https://instagram.com/x"
+    lead.business.social_confidence = "high"
+    store.save_lead(conn, lead, run_date="2026-06-20")
+    row = store.todays_batch(conn, "2026-06-20")[0]
+    assert row["social_confidence"] == "high"
+
+def test_init_db_is_idempotent():
+    conn = store.connect(":memory:")
+    store.init_db(conn)
+    store.init_db(conn)  # second call must not raise
+
+def test_init_db_migrates_legacy_table():
+    conn = store.connect(":memory:")
+    # legacy businesses table WITHOUT social_confidence
+    conn.executescript(
+        "CREATE TABLE businesses (place_id TEXT PRIMARY KEY, name TEXT, category TEXT,"
+        " town TEXT, address TEXT, phone TEXT, website TEXT, email TEXT, instagram TEXT,"
+        " facebook TEXT, rating REAL, review_count INTEGER, status TEXT, first_seen TEXT);")
+    conn.commit()
+    store.init_db(conn)
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(businesses)").fetchall()]
+    assert "social_confidence" in cols

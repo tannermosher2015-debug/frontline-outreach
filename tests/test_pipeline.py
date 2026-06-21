@@ -42,3 +42,32 @@ def test_run_daily_skips_already_seen(monkeypatch):
                         lambda b, config, current_year=None: Findings(no_website=True))
     leads = pipeline.run_daily(conn, CFG, api_key="k", run_date="2026-06-20")
     assert leads == []
+
+def test_run_daily_social_lookup_makes_dm(monkeypatch):
+    conn = store.connect(":memory:"); store.init_db(conn)
+    cand = [Business(place_id="s1", name="Da Green Coffee Bar", website="", review_count=300)]
+    monkeypatch.setattr(pipeline, "discover_all", lambda cfg, key: cand)
+    monkeypatch.setattr(pipeline, "audit_one",
+                        lambda b, config, current_year=None: Findings(no_website=True, social_only=True))
+    def fake_lookup(b, config):
+        b.instagram = "https://instagram.com/dagreencoffeebar"
+        b.social_confidence = "high"
+    monkeypatch.setattr(pipeline, "social_lookup_one", fake_lookup)
+    cfg = dict(CFG, socials={"enabled": True})
+    leads = pipeline.run_daily(conn, cfg, api_key="k", run_date="2026-06-20")
+    assert len(leads) == 1
+    assert leads[0].channel == "dm"
+    assert leads[0].business.social_confidence == "high"
+    assert store.todays_batch(conn, "2026-06-20")[0]["social_confidence"] == "high"
+
+def test_run_daily_no_lookup_for_site_lead(monkeypatch):
+    conn = store.connect(":memory:"); store.init_db(conn)
+    cand = [Business(place_id="w1", name="Modern Co", website="https://modern.co", review_count=2)]
+    monkeypatch.setattr(pipeline, "discover_all", lambda cfg, key: cand)
+    monkeypatch.setattr(pipeline, "audit_one",
+                        lambda b, config, current_year=None: Findings(weak_google=True))
+    calls = []
+    monkeypatch.setattr(pipeline, "social_lookup_one", lambda b, config: calls.append(b.place_id))
+    cfg = dict(CFG, socials={"enabled": True})
+    pipeline.run_daily(conn, cfg, api_key="k", run_date="2026-06-20")
+    assert calls == []  # has a real website -> no social lookup
