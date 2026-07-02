@@ -1,7 +1,7 @@
 batch_size = 10
 weak_google_threshold = 15
 daily_email_cap = 10
-send_mode = "live"             # dry_run | live
+send_mode = "dry_run"          # dry_run | live
 provider = "resend"            # resend | smtp
 from_email = "tanner@frontlinewebdesign.tech"
 from_name = "Tanner - Frontline Web Designs"

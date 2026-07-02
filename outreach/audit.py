@@ -6,6 +6,8 @@ from .models import Findings
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 SERVICE_WORDS = ("service", "menu", "pricing", "products", "offerings", "shop", "book")
+# TLD-position extensions that mean the match is an asset filename (logo@2x.png), not an email.
+ASSET_EXT = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".css", ".js")
 
 
 def has_viewport(soup):
@@ -41,8 +43,11 @@ def looks_outdated(html, soup, current_year, gap):
         reasons.append("no_viewport")
     if soup.find("font") or soup.find("center"):
         reasons.append("deprecated_tags")
-    for m in re.findall(r"(?:copyright|\(c\)|©)\s*(\d{4})", html, re.I):
-        if int(m) <= current_year - gap:
+    # Capture an optional range end (e.g. "2020-2026") via the non-digit separator and
+    # compare the LATEST year, so a maintained "2020-2026" notice is not flagged as old.
+    for m in re.finditer(r"(?:copyright|\(c\)|©)\s*(\d{4})(?:\D{1,3}(\d{4}))?", html, re.I):
+        latest = max(int(y) for y in m.groups() if y)
+        if latest <= current_year - gap:
             reasons.append("old_copyright")
             break
     if re.search(r"jquery[/-]1\.\d", html, re.I):
@@ -56,8 +61,12 @@ def find_email(soup, html):
             addr = a["href"][7:].split("?")[0].strip()
             if EMAIL_RE.fullmatch(addr):
                 return addr
-    m = EMAIL_RE.search(html)
-    return m.group(0) if m else ""
+    # Fall back to visible text only (not raw HTML/attributes) and reject asset filenames
+    # like logo@2x.png that the pattern would otherwise match inside src=/href= URLs.
+    for m in EMAIL_RE.finditer(soup.get_text(" ")):
+        if not m.group(0).lower().endswith(ASSET_EXT):
+            return m.group(0)
+    return ""
 
 
 SOCIAL_HOSTS = ("instagram.com", "facebook.com", "fb.com")
@@ -103,7 +112,9 @@ def check_broken_links(soup, base_url, head, cap, timeout):
 def detect_old_photos(soup, current_year, gap):
     cutoff = current_year - gap
     for img in soup.find_all("img", src=True):
-        for m in re.findall(r"((?:19|20)\d{2})", img["src"]):
+        # Guard against dimension strings (hero-1920x1080): reject a "year" that sits next
+        # to another digit or an 'x', so only standalone 4-digit years count.
+        for m in re.findall(r"(?<![\dxX])((?:19|20)\d{2})(?![\dxX])", img["src"]):
             if int(m) <= cutoff:
                 return (True, {"old_img": img["src"]})
     return (False, {})
@@ -113,6 +124,10 @@ def default_fetch(url, timeout):
     headers = {"User-Agent": "Mozilla/5.0 (FrontlineOutreach audit)"}
     r = requests.get(url, timeout=timeout, headers=headers)
     r.raise_for_status()
+    # requests defaults to ISO-8859-1 when a text/* page sends no charset, which mangles
+    # okina/diacritics. Only then fall back to content-sniffed encoding.
+    if r.encoding is None or r.encoding.lower() == "iso-8859-1":
+        r.encoding = r.apparent_encoding
     return r.text
 
 
@@ -126,8 +141,9 @@ def audit_business(b, config, fetch=None, head=None, current_year=None):
     f = Findings()
 
     has_real_site = bool(b.website) and not is_social_url(b.website)
+    # Mutually exclusive: no site at all vs. a site that is only a social page.
     f.no_website = not bool(b.website)
-    f.social_only = (not has_real_site)
+    f.social_only = bool(b.website) and is_social_url(b.website)
     f.weak_google = b.review_count < config.get("weak_google_threshold", 15)
     if b.website and is_social_url(b.website):
         f.details["social_site"] = b.website
