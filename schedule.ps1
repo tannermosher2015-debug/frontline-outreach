@@ -1,11 +1,13 @@
 #requires -Version 5.1
 <#
-  Register the Frontline Outreach funnel as scheduled tasks on THIS machine.
-  Two tasks:
-    FrontlineOutreach-Daily  (07:30)          run + send + send-followups  (build leads, cold email, nudges)
-    FrontlineOutreach-Poll   (08:00, every 2h) replies + send-samples (read replies, send ready samples)
-  Both respect send_mode in config.toml (dry_run until you flip it to live).
-  Stage 4 (auto-build demos) is a Claude agent and is NOT scheduled here; see the note below.
+  Register the Frontline Outreach funnel on THIS machine.
+  One task:
+    FrontlineOutreach-Daily  (07:30)  run  (discover + audit + score + draft, saves leads)
+  DISCOVERY ONLY. The cold-email send loop (send / send-followups / replies / send-samples)
+  is intentionally NOT scheduled: measured 2026-07-07, only 1 of 70 Maui leads had a
+  reachable email, so cold email is a dead channel for this segment. Discovery still runs
+  because it feeds the phone call sheet (`python -m outreach queue` / call-sheet.csv), which
+  is the live channel (60 of 70 have a phone). To re-enable email, add the send actions back.
 
   Install:  powershell -ExecutionPolicy Bypass -File .\schedule.ps1
   Remove:   powershell -ExecutionPolicy Bypass -File .\schedule.ps1 -Remove
@@ -30,29 +32,14 @@ if (-not (Test-Path $py)) {
 
 $set = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew
 
-# Daily: build today's leads, then send the cold batch.
+# Daily: discover + audit + score + draft today's leads (no sending). Feeds the call sheet.
 $daily = @(
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach run'            -WorkingDirectory $repo
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send'           -WorkingDirectory $repo
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send-followups' -WorkingDirectory $repo
+    New-ScheduledTaskAction -Execute $py -Argument '-m outreach run' -WorkingDirectory $repo
 )
 Register-ScheduledTask -TaskName "${prefix}Daily" -Action $daily -Settings $set `
     -Trigger (New-ScheduledTaskTrigger -Daily -At ([datetime]'07:30')) `
-    -Description 'Frontline Outreach: build + send the daily cold batch' | Out-Null
+    -Description 'Frontline Outreach: discover + score the daily lead batch (no send)' | Out-Null
 
-# Poll: read replies, then send any ready samples, every 2h across the day.
-$poll = @(
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach replies'      -WorkingDirectory $repo
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send-samples' -WorkingDirectory $repo
-)
-$pollTrigger = New-ScheduledTaskTrigger -Once -At ([datetime]'08:00') `
-    -RepetitionInterval (New-TimeSpan -Hours 2) -RepetitionDuration (New-TimeSpan -Hours 12)
-Register-ScheduledTask -TaskName "${prefix}Poll" -Action $poll -Settings $set `
-    -Trigger $pollTrigger -Description 'Frontline Outreach: read replies + send ready samples' | Out-Null
-
-Write-Host "Registered ${prefix}Daily (07:30) and ${prefix}Poll (every 2h, 08:00-20:00)."
-Write-Host 'They run in whatever send_mode config.toml is set to (currently dry_run).'
-Write-Host ''
-Write-Host 'Stage 4 (auto-build demos) is a Claude agent, not scheduled here. To automate it,'
-Write-Host 'add a task on a machine with Claude Code that runs, in this repo:'
-Write-Host '   claude -p "Follow BUILD_QUEUE.md and work the build queue."'
+Write-Host "Registered ${prefix}Daily (07:30): discovery only, no email sending."
+Write-Host 'Cold email is disabled on purpose (dead channel for this segment; see header).'
+Write-Host 'Work the leads by phone:  python -m outreach queue   (or call-sheet.csv)'

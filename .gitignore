@@ -8,3 +8,4 @@ outbox/
 .pytest_cache/
 *.egg-info/
 *.log
+call-sheet.csv        # generated lead data (contact info), keep out of the repo
