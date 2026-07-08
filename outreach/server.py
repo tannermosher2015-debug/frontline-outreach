@@ -49,4 +49,20 @@ def create_app(config, conn=None, today=None, api_key=""):
                                    api_key=api_key, run_date=today)
         return jsonify(res)
 
+    @app.route("/action/interested", methods=["POST"])
+    def interested():
+        d = request.json
+        if d.get("sample_url"):
+            store.set_sample_url(_conn, d["place_id"], d["sample_url"].strip())
+        store.set_status(_conn, d["place_id"], "interested")
+        return jsonify(ok=True)
+
+    @app.route("/action/send_sample", methods=["POST"])
+    def send_sample_action():
+        d = request.json
+        if d.get("sample_url"):
+            store.set_sample_url(_conn, d["place_id"], d["sample_url"].strip())
+        res = send.send_sample_email(_conn, d["place_id"], config, api_key=api_key)
+        return jsonify(res)
+
     return app

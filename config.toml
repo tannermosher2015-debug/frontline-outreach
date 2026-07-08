@@ -8,6 +8,7 @@ from_name = "Tanner - Frontline Web Designs"
 reply_to = "tanner@frontlinewebdesign.tech"
 db_path = "outreach.sqlite"
 outbox_dir = "outbox"
+deposit_link_url = "https://buy.stripe.com/9B63cudu51p5bT75YB3Ru03"  # $150 Starter deposit
 
 towns = ["Kahului", "Kihei", "Wailuku", "Lahaina", "Paia", "Makawao"]
 categories = ["restaurants", "landscapers", "auto repair", "hair salons", "general contractors", "fitness studios", "coffee shops"]
@@ -34,3 +35,7 @@ old_photo_year_gap = 4
 enabled = true
 query_suffix = "instagram"
 confidence_threshold = 0.6
+
+[replies]
+enabled = true
+mailbox = "INBOX"

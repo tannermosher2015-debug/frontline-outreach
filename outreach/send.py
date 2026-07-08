@@ -3,6 +3,7 @@ from datetime import date
 from pathlib import Path
 import requests
 from . import store
+from .messages import SAMPLE_SUBJECT, SAMPLE_BODY, EMAIL_SIGNATURE, EMAIL_OPTOUT
 
 RESEND_URL = "https://api.resend.com/emails"
 
@@ -21,10 +22,10 @@ def _lead_row(conn, place_id, run_date):
 def _safe(name):
     return re.sub(r"[^A-Za-z0-9_-]+", "_", name)[:40] or "lead"
 
-def write_eml(cfg, to, subject, body):
+def write_eml(cfg, to, subject, body, tag=""):
     outdir = Path(cfg.get("outbox_dir", "outbox"))
     outdir.mkdir(parents=True, exist_ok=True)
-    path = outdir / f"{_safe(to)}.eml"
+    path = outdir / f"{tag}{_safe(to)}.eml"
     content = (f"From: {cfg['from_name']} <{cfg['from_email']}>\n"
                f"To: {to}\nReply-To: {cfg.get('reply_to', cfg['from_email'])}\n"
                f"Subject: {subject}\n\n{body}\n")
@@ -91,3 +92,39 @@ def smtp_transport(cfg, api_key, to, subject, body):
         s.login(os.environ["SMTP_USER"], os.environ["SMTP_PASS"])
         s.send_message(msg)
     return True
+
+def send_sample_email(conn, place_id, cfg, api_key, _transport=None):
+    # Warm second touch: only ever sent to a lead who replied "yes" and already
+    # has a built sample. Not subject to the cold-email daily cap.
+    b = store.get_business(conn, place_id)
+    if not b or not b.get("email"):
+        return {"mode": "no_email"}
+    to = b["email"]
+    if store.is_suppressed(conn, to):
+        return {"mode": "skipped_suppressed"}
+    if b.get("status") == "sample_sent" or b.get("sample_sent_at"):
+        return {"mode": "already_sent"}
+    demo_url = (b.get("sample_url") or "").strip()
+    if not demo_url:
+        return {"mode": "no_sample_url"}
+    deposit_link = (cfg.get("deposit_link_url") or "").strip()
+    if not deposit_link:
+        return {"mode": "no_deposit_link"}
+
+    name = b["name"]
+    subject = SAMPLE_SUBJECT.format(name=name)
+    body = (SAMPLE_BODY.format(name=name, demo_url=demo_url, deposit_link=deposit_link)
+            + EMAIL_SIGNATURE + EMAIL_OPTOUT)
+
+    if cfg.get("send_mode") != "live":
+        path = write_eml(cfg, to, subject, body, tag="sample_")
+        return {"mode": "dry_run", "path": str(path)}
+
+    transport = _transport or (resend_transport if cfg.get("provider") == "resend"
+                               else smtp_transport)
+    try:
+        transport(cfg, api_key, to, subject, body)
+    except Exception as e:
+        return {"mode": "send_failed", "error": str(e)}
+    store.mark_sample_sent(conn, place_id)
+    return {"mode": "sent", "to": to}

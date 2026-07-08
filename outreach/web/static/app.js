@@ -28,4 +28,12 @@ document.querySelectorAll(".card").forEach(card => {
     setStatus(e.target, res.mode === "sent" ? "sent" : res.mode);
     e.target.disabled = false;
   });
+  card.querySelector(".send-sample")?.addEventListener("click", async (e) => {
+    const url = card.querySelector(".sample-url")?.value.trim();
+    if(!url){ setStatus(e.target, "add a demo URL first"); return; }
+    e.target.disabled = true;
+    const res = await post("/action/send_sample", {place_id:id, sample_url:url});
+    setStatus(e.target, res.mode === "sent" ? "sample sent" : res.mode);
+    e.target.disabled = false;
+  });
 });

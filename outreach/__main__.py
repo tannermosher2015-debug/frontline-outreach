@@ -17,6 +17,16 @@ def build_parser():
     pd = sub.add_parser("send", help="Process approved email leads (respects send_mode)")
     pd.add_argument("--config", default="config.toml")
     pd.add_argument("--date", default=None)
+    prp = sub.add_parser("replies", help="Read inbox replies and route leads (yes/no/unclear)")
+    prp.add_argument("--config", default="config.toml")
+    pss = sub.add_parser("send-samples", help="Email sample + deposit link to interested leads that have a built sample")
+    pss.add_argument("--config", default="config.toml")
+    pq = sub.add_parser("queue", help="List interested leads that still need a sample built")
+    pq.add_argument("--config", default="config.toml")
+    pset = sub.add_parser("set-sample", help="Record a built demo URL for a lead (marks it ready to send)")
+    pset.add_argument("place_id")
+    pset.add_argument("url")
+    pset.add_argument("--config", default="config.toml")
     return p
 
 def cmd_run(ns):
@@ -57,9 +67,56 @@ def cmd_send(ns):
     print(f"Processed {n} email leads (mode={cfg.get('send_mode')}).")
     return 0
 
+def cmd_replies(ns):
+    from . import replies
+    cfg = cfgmod.load_config(ns.config)
+    user = cfgmod.get_env("IMAP_USER")
+    password = cfgmod.get_env("IMAP_PASS")
+    if not (user and password):
+        print("IMAP_USER / IMAP_PASS not set in .env. Aborting.", file=sys.stderr); return 1
+    host = cfgmod.get_env("IMAP_HOST", "imap.hostinger.com")
+    port = cfgmod.get_env("IMAP_PORT", "993")
+    mailbox = cfg.get("replies", {}).get("mailbox", "INBOX")
+    conn = store.connect(cfg["db_path"]); store.init_db(conn)
+    summary = replies.poll_replies(conn, host, user, password, port=port, mailbox=mailbox)
+    print(f"Replies processed: {summary}")
+    return 0
+
+def cmd_send_samples(ns):
+    from . import send as sender
+    cfg = cfgmod.load_config(ns.config)
+    api_key = cfgmod.get_env("RESEND_API_KEY", "")
+    conn = store.connect(cfg["db_path"]); store.init_db(conn)
+    leads = store.leads_awaiting_sample_send(conn)
+    for lead in leads:
+        res = sender.send_sample_email(conn, lead["place_id"], cfg, api_key)
+        print(f"  {lead['name']}: {res['mode']}")
+    print(f"Processed {len(leads)} sample sends (mode={cfg.get('send_mode')}).")
+    return 0
+
+def cmd_queue(ns):
+    cfg = cfgmod.load_config(ns.config)
+    conn = store.connect(cfg["db_path"]); store.init_db(conn)
+    leads = store.leads_awaiting_build(conn)
+    for l in leads:
+        site = l["website"] or l["instagram"] or l["facebook"] or "(no site)"
+        print(f"  {l['place_id']}  {l['name']} | {l['category']}, {l['town']} | {site}")
+    print(f"{len(leads)} lead(s) awaiting a built sample.")
+    return 0
+
+def cmd_set_sample(ns):
+    cfg = cfgmod.load_config(ns.config)
+    conn = store.connect(cfg["db_path"]); store.init_db(conn)
+    store.set_sample_url(conn, ns.place_id, ns.url.strip())
+    print(f"Sample URL set for {ns.place_id}: {ns.url.strip()}")
+    print("Next: python -m outreach send-samples  (respects send_mode)")
+    return 0
+
 def main(argv=None):
     ns = build_parser().parse_args(argv)
-    return {"run": cmd_run, "serve": cmd_serve, "send": cmd_send}[ns.command](ns)
+    return {"run": cmd_run, "serve": cmd_serve, "send": cmd_send,
+            "replies": cmd_replies, "send-samples": cmd_send_samples,
+            "queue": cmd_queue, "set-sample": cmd_set_sample}[ns.command](ns)
 
 if __name__ == "__main__":
     raise SystemExit(main())

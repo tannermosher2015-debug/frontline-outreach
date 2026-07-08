@@ -36,6 +36,14 @@
         <button class="skip">Skip</button>
         <span class="status" role="status">{{ l.status }}</span>
       </div>
+      {% if l.channel == 'email' %}
+      <div class="sample-row">
+        <label class="sr-only" for="sample-{{ l.place_id }}">Sample demo URL for {{ l.name }}</label>
+        <input id="sample-{{ l.place_id }}" class="sample-url" type="url"
+               placeholder="https://slug.frontlinewebdesign.tech" value="{{ l.sample_url or '' }}">
+        <button class="send-sample">Send sample + deposit link</button>
+      </div>
+      {% endif %}
     </article>
     {% else %}
     <p>No leads yet today. Run <code>python -m outreach run</code>.</p>

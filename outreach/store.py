@@ -43,6 +43,11 @@ def init_db(conn):
         conn.execute("ALTER TABLE businesses ADD COLUMN social_confidence TEXT DEFAULT ''")
     except sqlite3.OperationalError:
         pass  # column already exists — fresh DBs and re-runs both land here
+    for col, decl in (("sample_url", "TEXT DEFAULT ''"), ("sample_sent_at", "TEXT")):
+        try:
+            conn.execute(f"ALTER TABLE businesses ADD COLUMN {col} {decl}")
+        except sqlite3.OperationalError:
+            pass  # sample-funnel columns; already present on re-runs
     conn.commit()
 
 def upsert_business(conn, b: Business):
@@ -89,6 +94,7 @@ def todays_batch(conn, run_date):
     cur = conn.execute(
         """SELECT b.place_id, b.name, b.category, b.town, b.phone, b.website,
                   b.email, b.instagram, b.facebook, b.status, b.social_confidence,
+                  b.sample_url,
                   a.score, a.summary, a.findings,
                   o.channel, o.subject, o.draft_text, o.contacted_at, o.send_status
            FROM audits a
@@ -122,6 +128,44 @@ def update_draft(conn, place_id, draft_text):
                  (draft_text, place_id))
     conn.commit()
 
+def get_business(conn, place_id):
+    cur = conn.execute("SELECT * FROM businesses WHERE place_id=?", (place_id,))
+    row = cur.fetchone()
+    return dict(row) if row else None
+
+def find_by_email(conn, email):
+    if not email:
+        return None
+    cur = conn.execute(
+        "SELECT place_id, name, status FROM businesses WHERE lower(email)=lower(?)",
+        (email.strip(),))
+    row = cur.fetchone()
+    return dict(row) if row else None
+
+def set_sample_url(conn, place_id, url):
+    conn.execute("UPDATE businesses SET sample_url=? WHERE place_id=?", (url, place_id))
+    conn.commit()
+
+def mark_sample_sent(conn, place_id):
+    conn.execute(
+        "UPDATE businesses SET status='sample_sent', sample_sent_at=? WHERE place_id=?",
+        (_now(), place_id))
+    conn.commit()
+
+def leads_awaiting_sample_send(conn):
+    cur = conn.execute(
+        "SELECT place_id, name, email, sample_url FROM businesses "
+        "WHERE status='interested' AND sample_url<>'' "
+        "AND (sample_sent_at IS NULL OR sample_sent_at='')")
+    return [dict(r) for r in cur.fetchall()]
+
+def leads_awaiting_build(conn):
+    cur = conn.execute(
+        "SELECT place_id, name, category, town, website, phone, email, "
+        "instagram, facebook FROM businesses "
+        "WHERE status='interested' AND (sample_url IS NULL OR sample_url='')")
+    return [dict(r) for r in cur.fetchall()]
+
 def is_suppressed(conn, email):
     if not email:
         return False
@@ -147,7 +191,8 @@ def history(conn):
     cur = conn.execute(
         """SELECT b.name, b.town, b.status, o.channel, o.contacted_at
            FROM businesses b JOIN outreach o ON o.business_id=b.place_id
-           WHERE b.status IN ('contacted','replied','client','skipped')
+           WHERE b.status IN ('contacted','replied','interested','sample_sent',
+                              'unsubscribed','client','skipped')
            ORDER BY o.contacted_at DESC"""
     )
     return [dict(r) for r in cur.fetchall()]

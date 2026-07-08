@@ -67,5 +67,22 @@ EMAIL_SIGNATURE = (
 EMAIL_OPTOUT = (
     "\n\n---\nYou're receiving this because you run a local Maui business. "
     "If you'd rather not hear from me, just reply \"not interested\" and I won't "
-    "follow up.\nFrontline Web Designs, Maui, HI"
+    "follow up.\nFrontline Web Designs, 113 Lili Lehua St, Wailuku, HI 96793"
+)
+
+# Second-touch email: sent only after a lead replies "yes" to the free sample.
+# {name}, {demo_url}, {deposit_link} are filled at send time; the signature and
+# opt-out are appended by send.send_sample_email, same as the cold email.
+SAMPLE_SUBJECT = "Your website sample is ready, {name}"
+
+SAMPLE_BODY = (
+    "Aloha {name},\n\n"
+    "Thanks for saying yes. I put together a free sample website for you:\n\n"
+    "{demo_url}\n\n"
+    "Take a look on your phone and your computer. If you like the direction, you "
+    "can lock in your build with a $150 deposit here (it counts toward your total, "
+    "it is not on top of it):\n\n"
+    "{deposit_link}\n\n"
+    "If you would rather change anything first, just reply and tell me what you'd "
+    "tweak. No rush, and no commitment either way."
 )
