@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from .models import Business
 
 SCHEMA = """
@@ -43,7 +43,8 @@ def init_db(conn):
         conn.execute("ALTER TABLE businesses ADD COLUMN social_confidence TEXT DEFAULT ''")
     except sqlite3.OperationalError:
         pass  # column already exists — fresh DBs and re-runs both land here
-    for col, decl in (("sample_url", "TEXT DEFAULT ''"), ("sample_sent_at", "TEXT")):
+    for col, decl in (("sample_url", "TEXT DEFAULT ''"), ("sample_sent_at", "TEXT"),
+                      ("followup_sent_at", "TEXT")):
         try:
             conn.execute(f"ALTER TABLE businesses ADD COLUMN {col} {decl}")
         except sqlite3.OperationalError:
@@ -165,6 +166,27 @@ def leads_awaiting_build(conn):
         "instagram, facebook FROM businesses "
         "WHERE status='interested' AND (sample_url IS NULL OR sample_url='')")
     return [dict(r) for r in cur.fetchall()]
+
+def leads_awaiting_followup(conn, days):
+    cutoff = (date.today() - timedelta(days=days)).isoformat()
+    cur = conn.execute(
+        """SELECT b.place_id, b.name, b.email
+           FROM businesses b JOIN outreach o ON o.business_id=b.place_id
+           WHERE b.status='contacted' AND o.channel='email' AND o.send_status='sent'
+             AND (b.followup_sent_at IS NULL OR b.followup_sent_at='')
+             AND substr(o.contacted_at,1,10) <= ?""", (cutoff,))
+    return [dict(r) for r in cur.fetchall()]
+
+def followups_sent_on(conn, run_date):
+    cur = conn.execute(
+        "SELECT COUNT(*) AS n FROM businesses WHERE substr(followup_sent_at,1,10)=?",
+        (run_date,))
+    return cur.fetchone()["n"]
+
+def mark_followup_sent(conn, place_id):
+    conn.execute("UPDATE businesses SET followup_sent_at=? WHERE place_id=?",
+                 (_now(), place_id))
+    conn.commit()
 
 def is_suppressed(conn, email):
     if not email:

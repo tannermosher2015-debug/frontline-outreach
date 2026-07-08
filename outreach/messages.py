@@ -83,7 +83,23 @@ SAMPLE_BODY = (
     "can lock in your build with a $150 deposit here (it counts toward your total, "
     "it is not on top of it):\n\n"
     "{deposit_link}\n\n"
+    "You're covered: if the finished site isn't something you're proud of, you "
+    "don't pay the rest.\n\n"
     "(The checkout is under my business name, Frontline Web Designs.)\n\n"
     "If you would rather change anything first, just reply and tell me what you'd "
     "tweak. No rush, and no commitment either way."
+)
+
+# One gentle second touch, sent a few days after the cold email to leads who
+# never replied. Sent at most once per business, and it promises no more email.
+FOLLOWUP_SUBJECT = "Still happy to make you a free sample, {name}"
+
+FOLLOWUP_BODY = (
+    "Aloha {name},\n\n"
+    "Just circling back. A few days ago I offered to put together a free website "
+    "sample for {name}, no cost and no commitment, and I wasn't sure my note "
+    "reached you.\n\n"
+    "If you'd like to see what a clean, modern version could look like, just reply "
+    "and I'll build one for you. If it's not for you, no worries at all, and I "
+    "won't follow up again."
 )

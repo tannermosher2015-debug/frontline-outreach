@@ -2,7 +2,7 @@
 <#
   Register the Frontline Outreach funnel as scheduled tasks on THIS machine.
   Two tasks:
-    FrontlineOutreach-Daily  (07:30)          run + send            (build leads, send cold email)
+    FrontlineOutreach-Daily  (07:30)          run + send + send-followups  (build leads, cold email, nudges)
     FrontlineOutreach-Poll   (08:00, every 2h) replies + send-samples (read replies, send ready samples)
   Both respect send_mode in config.toml (dry_run until you flip it to live).
   Stage 4 (auto-build demos) is a Claude agent and is NOT scheduled here; see the note below.
@@ -32,8 +32,9 @@ $set = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances Ignor
 
 # Daily: build today's leads, then send the cold batch.
 $daily = @(
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach run'  -WorkingDirectory $repo
-    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send' -WorkingDirectory $repo
+    New-ScheduledTaskAction -Execute $py -Argument '-m outreach run'            -WorkingDirectory $repo
+    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send'           -WorkingDirectory $repo
+    New-ScheduledTaskAction -Execute $py -Argument '-m outreach send-followups' -WorkingDirectory $repo
 )
 Register-ScheduledTask -TaskName "${prefix}Daily" -Action $daily -Settings $set `
     -Trigger (New-ScheduledTaskTrigger -Daily -At ([datetime]'07:30')) `

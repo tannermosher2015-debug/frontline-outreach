@@ -3,7 +3,8 @@ from datetime import date
 from pathlib import Path
 import requests
 from . import store
-from .messages import SAMPLE_SUBJECT, SAMPLE_BODY, EMAIL_SIGNATURE, EMAIL_OPTOUT
+from .messages import (SAMPLE_SUBJECT, SAMPLE_BODY, FOLLOWUP_SUBJECT, FOLLOWUP_BODY,
+                       EMAIL_SIGNATURE, EMAIL_OPTOUT)
 
 RESEND_URL = "https://api.resend.com/emails"
 
@@ -127,4 +128,34 @@ def send_sample_email(conn, place_id, cfg, api_key, _transport=None):
     except Exception as e:
         return {"mode": "send_failed", "error": str(e)}
     store.mark_sample_sent(conn, place_id)
+    return {"mode": "sent", "to": to}
+
+def send_followup_email(conn, place_id, cfg, api_key, _transport=None):
+    # One gentle nudge to a lead who was cold-emailed but never replied.
+    b = store.get_business(conn, place_id)
+    if not b or not b.get("email"):
+        return {"mode": "no_email"}
+    to = b["email"]
+    if store.is_suppressed(conn, to):
+        return {"mode": "skipped_suppressed"}
+    if b.get("followup_sent_at"):
+        return {"mode": "already_followed_up"}
+    if b.get("status") != "contacted":
+        return {"mode": "not_eligible"}  # replied/interested/etc. get no cold nudge
+
+    name = b["name"]
+    subject = FOLLOWUP_SUBJECT.format(name=name)
+    body = FOLLOWUP_BODY.format(name=name) + EMAIL_SIGNATURE + EMAIL_OPTOUT
+
+    if cfg.get("send_mode") != "live":
+        path = write_eml(cfg, to, subject, body, tag="followup_")
+        return {"mode": "dry_run", "path": str(path)}
+
+    transport = _transport or (resend_transport if cfg.get("provider") == "resend"
+                               else smtp_transport)
+    try:
+        transport(cfg, api_key, to, subject, body)
+    except Exception as e:
+        return {"mode": "send_failed", "error": str(e)}
+    store.mark_followup_sent(conn, place_id)
     return {"mode": "sent", "to": to}

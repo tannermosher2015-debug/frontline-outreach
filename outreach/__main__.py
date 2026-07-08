@@ -27,6 +27,8 @@ def build_parser():
     pset.add_argument("place_id")
     pset.add_argument("url")
     pset.add_argument("--config", default="config.toml")
+    pfu = sub.add_parser("send-followups", help="Send one gentle follow-up to leads who never replied")
+    pfu.add_argument("--config", default="config.toml")
     return p
 
 def cmd_run(ns):
@@ -112,11 +114,30 @@ def cmd_set_sample(ns):
     print("Next: python -m outreach send-samples  (respects send_mode)")
     return 0
 
+def cmd_send_followups(ns):
+    from . import send as sender
+    cfg = cfgmod.load_config(ns.config)
+    api_key = cfgmod.get_env("RESEND_API_KEY", "")
+    conn = store.connect(cfg["db_path"]); store.init_db(conn)
+    today = date.today().isoformat()
+    cap = cfg.get("daily_email_cap", 10)
+    remaining = max(0, cap - store.emails_sent_on(conn, today) - store.followups_sent_on(conn, today))
+    if remaining <= 0:
+        print("Daily email budget already used; no follow-ups sent."); return 0
+    days = cfg.get("followup_after_days", 4)
+    leads = store.leads_awaiting_followup(conn, days)[:remaining]
+    for lead in leads:
+        res = sender.send_followup_email(conn, lead["place_id"], cfg, api_key)
+        print(f"  {lead['name']}: {res['mode']}")
+    print(f"Processed {len(leads)} follow-up(s) (mode={cfg.get('send_mode')}, budget left {remaining}).")
+    return 0
+
 def main(argv=None):
     ns = build_parser().parse_args(argv)
     return {"run": cmd_run, "serve": cmd_serve, "send": cmd_send,
             "replies": cmd_replies, "send-samples": cmd_send_samples,
-            "queue": cmd_queue, "set-sample": cmd_set_sample}[ns.command](ns)
+            "queue": cmd_queue, "set-sample": cmd_set_sample,
+            "send-followups": cmd_send_followups}[ns.command](ns)
 
 if __name__ == "__main__":
     raise SystemExit(main())
