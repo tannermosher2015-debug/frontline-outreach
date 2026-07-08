@@ -76,7 +76,7 @@ def test_audit_business_no_website_sets_signals():
                                             "outdated_year_gap": 3, "old_photo_year_gap": 4}},
                        fetch=None, current_year=2026)
     assert f.no_website is True
-    assert f.social_only is True
+    assert f.social_only is False   # no website at all is not "social only" (mutually exclusive)
     assert f.weak_google is True
 
 def test_audit_business_with_site_uses_fetch():

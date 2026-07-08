@@ -9,6 +9,26 @@ SERVICE_WORDS = ("service", "menu", "pricing", "products", "offerings", "shop", 
 # TLD-position extensions that mean the match is an asset filename (logo@2x.png), not an email.
 ASSET_EXT = (".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".ico", ".css", ".js")
 
+# Placeholder / third-party domains that are never the business's real address.
+JUNK_EMAIL_DOMAINS = ("example.com", "example.org", "example.net", "domain.com",
+                      "yourdomain.com", "email.com", "sentry.io", "wixpress.com",
+                      "googleapis.com", "schema.org")
+ROLE_PREFIXES = ("info", "contact", "hello", "aloha", "hi", "sales", "office",
+                 "admin", "booking", "bookings", "reservations", "orders", "team")
+
+
+def _is_junk_email(addr):
+    a = addr.lower()
+    if a.endswith(ASSET_EXT):
+        return True
+    dom = a.split("@", 1)[-1]
+    return any(dom == j or dom.endswith("." + j) for j in JUNK_EMAIL_DOMAINS)
+
+
+def _site_domain(url):
+    dom = urlparse(url).netloc.lower()
+    return dom[4:] if dom.startswith("www.") else dom
+
 
 def has_viewport(soup):
     for m in soup.find_all("meta"):
@@ -55,18 +75,49 @@ def looks_outdated(html, soup, current_year, gap):
     return (len(reasons) > 0, {"reasons": reasons})
 
 
-def find_email(soup, html):
+def find_email(soup, html=None, site_domain=None):
+    # Collect mailto + visible-text candidates, drop junk (asset filenames like
+    # logo@2x.png, placeholder/theme domains), then prefer the business's own domain
+    # and role addresses (info@, contact@) over a random third-party address.
+    cands = []
     for a in soup.find_all("a", href=True):
         if a["href"].lower().startswith("mailto:"):
             addr = a["href"][7:].split("?")[0].strip()
             if EMAIL_RE.fullmatch(addr):
-                return addr
-    # Fall back to visible text only (not raw HTML/attributes) and reject asset filenames
-    # like logo@2x.png that the pattern would otherwise match inside src=/href= URLs.
+                cands.append(addr)
     for m in EMAIL_RE.finditer(soup.get_text(" ")):
-        if not m.group(0).lower().endswith(ASSET_EXT):
-            return m.group(0)
-    return ""
+        cands.append(m.group(0))
+    cands = [c for c in cands if not _is_junk_email(c)]
+    if not cands:
+        return ""
+
+    def score(addr):
+        local, _, dom = addr.lower().partition("@")
+        return ((10 if site_domain and (dom == site_domain or dom.endswith("." + site_domain)) else 0)
+                + (3 if local in ROLE_PREFIXES else 0))
+    cands.sort(key=score, reverse=True)
+    return cands[0]
+
+
+def find_contact_url(soup, base_url):
+    # The email is usually on a Contact (or About) page, not the homepage. Return the
+    # best same-site candidate link, preferring Contact over About.
+    base_host = urlparse(base_url).netloc.lower()
+    best = None
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if href.lower().startswith(("mailto:", "tel:", "#", "javascript:")):
+            continue
+        blob = (href + " " + a.get_text(" ", strip=True)).lower()
+        rank = 2 if "contact" in blob else (1 if "about" in blob else 0)
+        if not rank:
+            continue
+        url = urljoin(base_url, href)
+        if urlparse(url).netloc.lower() not in ("", base_host):
+            continue
+        if best is None or rank > best[0]:
+            best = (rank, url)
+    return best[1] if best else None
 
 
 SOCIAL_HOSTS = ("instagram.com", "facebook.com", "fb.com")
@@ -172,7 +223,17 @@ def audit_business(b, config, fetch=None, head=None, current_year=None):
     f.old_photos, _ = detect_old_photos(soup, current_year,
                                         acfg.get("old_photo_year_gap", 4))
     if not b.email:
-        b.email = find_email(soup, html)
+        site_domain = _site_domain(b.website)
+        b.email = find_email(soup, html, site_domain)
+        if not b.email:
+            # Most sites hide the email one click deep, on Contact/About.
+            contact_url = find_contact_url(soup, b.website)
+            if contact_url:
+                try:
+                    chtml = fetch(contact_url, timeout=acfg.get("request_timeout", 8))
+                    b.email = find_email(BeautifulSoup(chtml, "lxml"), chtml, site_domain)
+                except Exception:
+                    pass
     socials = find_socials(soup)
     b.instagram = b.instagram or socials["instagram"]
     b.facebook = b.facebook or socials["facebook"]
