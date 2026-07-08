@@ -1,11 +1,11 @@
 batch_size = 10
 weak_google_threshold = 15
-daily_email_cap = 10
+daily_email_cap = 3            # warmup for the new mauiwebguy.com domain; ramp toward 10 over 1-2 weeks
 send_mode = "dry_run"          # dry_run | live
-provider = "resend"            # resend | smtp
-from_email = "tanner@frontlinewebdesign.tech"
-from_name = "Tanner - Frontline Web Designs"
-reply_to = "tanner@frontlinewebdesign.tech"
+provider = "smtp"              # resend | smtp  (Hostinger SMTP for mauiwebguy.com)
+from_email = "tanner@mauiwebguy.com"
+from_name = "Tanner - Maui Web Guy"
+reply_to = "tanner@mauiwebguy.com"
 db_path = "outreach.sqlite"
 outbox_dir = "outbox"
 deposit_link_url = "https://buy.stripe.com/9B63cudu51p5bT75YB3Ru03"  # $150 Starter deposit

@@ -21,7 +21,7 @@ def test_build_draft_no_website_email_has_subject_and_optout():
     assert channel == "email"
     assert subject  # non-empty subject for email
     assert "Joe's Tacos" in body
-    assert "Frontline Web Designs" in body
+    assert "Maui Web Guy" in body   # sender signature
     assert "not interested" in body.lower()   # CAN-SPAM opt-out line
 
 def test_build_draft_dm_has_no_optout_footer():

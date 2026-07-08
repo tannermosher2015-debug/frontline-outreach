@@ -3,7 +3,7 @@
 
 DM_TEMPLATES = {
     "no_website": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter and I build clean websites for small businesses on the side. "
         "I came across {name} and noticed you may not have a dedicated website yet. "
         "I'm currently offering a free website sample upon request, so you can see what "
@@ -11,7 +11,7 @@ DM_TEMPLATES = {
         "like me to put together a sample for you?"
     ),
     "outdated_website": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter and I build clean, mobile-friendly websites for small businesses. "
         "I checked out {name}'s current website and I think I could help make it look "
         "more modern, easier to use, and better at getting customers to contact you. "
@@ -19,7 +19,7 @@ DM_TEMPLATES = {
         "cleaner version could look like."
     ),
     "social_only": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter helping small businesses build clean, professional websites. "
         "{name}'s Instagram looks solid, but having a website can make it easier for "
         "customers to find your services, prices, photos, contact info, and book with "
@@ -27,14 +27,14 @@ DM_TEMPLATES = {
         "your business could look like online."
     ),
     "weak_google": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter who builds clean websites for small businesses on the side. "
         "I came across {name} and a solid website would help more local customers find "
         "and trust you when they search. I'm offering a free website sample upon request "
         "so you can see what it could look like - no commitment."
     ),
     "no_contact_button": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter and I build clean, mobile-friendly websites for small businesses. "
         "I looked at {name}'s site and noticed it's hard for customers to reach you "
         "quickly. I'd love to help make it easier for people to call, message, or book. "
@@ -42,7 +42,7 @@ DM_TEMPLATES = {
         "cleaner version could look like."
     ),
     "default": (
-        "Aloha, my name is Tanner with Frontline Web Designs. I'm a local Maui "
+        "Aloha, my name is Tanner, the Maui Web Guy. I'm a local Maui "
         "firefighter and I build clean, mobile-friendly websites for small businesses. "
         "I came across {name} and think a refreshed website could help you reach more "
         "customers. I'm offering a free website sample upon request - no commitment. "
@@ -60,14 +60,14 @@ EMAIL_SUBJECTS = {
 }
 
 EMAIL_SIGNATURE = (
-    "\n\nMahalo,\nTanner\nFrontline Web Designs\nfrontlinewebdesign.tech\n"
+    "\n\nMahalo,\nTanner\nMaui Web Guy\nmauiwebguy.com\n"
 )
 
 # CAN-SPAM opt-out line appended to emails only.
 EMAIL_OPTOUT = (
     "\n\n---\nYou're receiving this because you run a local Maui business. "
     "If you'd rather not hear from me, just reply \"not interested\" and I won't "
-    "follow up.\nFrontline Web Designs, 113 Lili Lehua St, Wailuku, HI 96793"
+    "follow up.\nMaui Web Guy, 113 Lili Lehua St, Wailuku, HI 96793"
 )
 
 # Second-touch email: sent only after a lead replies "yes" to the free sample.
@@ -83,6 +83,7 @@ SAMPLE_BODY = (
     "can lock in your build with a $150 deposit here (it counts toward your total, "
     "it is not on top of it):\n\n"
     "{deposit_link}\n\n"
+    "(The checkout is under my business name, Frontline Web Designs.)\n\n"
     "If you would rather change anything first, just reply and tell me what you'd "
     "tweak. No rush, and no commitment either way."
 )
