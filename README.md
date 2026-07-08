@@ -23,7 +23,33 @@ python -m outreach serve    # open the dashboard, review + send
 
 DMs are copy-paste from the dashboard (Instagram/Facebook automation is against
 their ToS). Email auto-send stays in dry-run (writes outbox/*.eml) until you set
-`send_mode = "live"` in config.toml with Resend + frontlinewebdesign.tech.
+`send_mode = "live"` in config.toml.
+
+## Autonomous funnel
+
+The full loop, cold email to paid deposit, runs as "Maui Web Guy" through the Hostinger
+mailbox tanner@mauiwebguy.com (config: `provider = "smtp"`, from/reply on mauiwebguy.com;
+`.env` holds SMTP_* and IMAP_* for that mailbox).
+
+```powershell
+python -m outreach run            # discover + audit + score + draft today's leads
+python -m outreach send           # cold email (free-sample offer), capped, dry-run first
+python -m outreach replies        # read inbox, sort replies: yes -> interested, no -> suppressed
+python -m outreach queue          # interested leads still needing a sample built
+python -m outreach set-sample <place_id> <url>   # record a built demo URL
+python -m outreach send-samples   # email the demo + $150 deposit link to interested leads
+python -m outreach send-followups # one gentle nudge to non-repliers, within the daily cap
+```
+
+Stage 4 (auto-build a demo per interested lead) is a Claude agent, see `BUILD_QUEUE.md`.
+`schedule.ps1` registers Windows Task Scheduler jobs (Daily: run + send + send-followups;
+Poll every 2h: replies + send-samples). Everything respects `send_mode` (dry_run by default).
+
+### Going live
+1. Rotate the mailbox password if it was ever exposed, and update `.env`.
+2. `python -m outreach run`, then `python -m outreach send`, and read `outbox/*.eml`.
+3. Set `send_mode = "live"`. Cold email goes out at `daily_email_cap`/day (start at 3 to warm
+   a new sending domain, ramp toward 10).
 
 ## Test
 
