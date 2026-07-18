@@ -1,0 +1,372 @@
+[
+ {
+  "business": "SoDaSpot Maui",
+  "demo_url": "https://sodaspot.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": null,
+   "email": "sodaspotmaui@gmail.com",
+   "phone": null,
+   "instagram": "@sodaspotmaui",
+   "source": "Repo recon at C:/dev/sodaspot-maui (recon.md, BRIEF.md, audit.md; first-party scrape of sodaspotmaui.com dated 2026-06-28). Email and Instagram verified on their own site and present in the demo page footers (index.html and all subpages). Owner names and phone are not published anywhere; recon confirmed this. The (435) 227-5252 number belongs to a possibly separate 'Swell Soda Company' storefront and must NOT be used."
+  },
+  "missing": [
+   "owner names (reviews suggest two women owners, but names are not published anywhere; the two-owner count itself is unconfirmed)",
+   "phone number (their site is email-only; do not use the Swell Soda Company number)",
+   "Google Business rating (the 5.0/60 listing belongs to 'Swell Soda Company', identity unconfirmed; do not borrow it)"
+  ],
+  "email": {
+   "subject": "I built SoDaSpot a website (it is already live)",
+   "body": "Aloha SoDaSpot team,\n\nI'm Tanner, I build websites for Maui small businesses (Frontline Web Designs). I went through your drink menu last week, and anyone who names a ginger ale \"Broke Da Mouth\" deserves a site with that much personality.\n\nSo I built one. It is live right now: https://sodaspot.mauifoodtruckwebsites.com\n\nIf you like it, it is yours. The LIVE plan is $49/mo: your packages and reviews right on the booking path instead of buried, one big Book button, and you can update the menu, prices, and sold-out flavors from your phone.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs\nfrontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha! i'm tanner, local web guy here on maui. loved your menu so much i went ahead and built sodaspot a whole website, it's live right now: https://sodaspot.mauifoodtruckwebsites.com. if you like it, it's yours, happy to walk you through it 🤙",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "One concrete fix: current Squarespace homepage loads a ~2 MB hero photo (slow first paint on Maui cell data) and the booking link is a small line in the nav; great reviews are buried on a separate page. The demo is fast, has one big Book button, and puts the reviews on the booking path.",
+    "subject": "One thing your current site is costing you",
+    "body": "Aloha, Tanner again.\n\nOne concrete thing I noticed while building your demo: your current homepage hero is an almost 2 MB photo, which makes for a slow first load on Maui cell service, and \"Let's get you booked!\" is a small link in the menu. Your 8 glowing reviews (Jenna's wedding at Gather on Maui, the grad parties) live on a separate page most visitors never see.\n\nThe demo flips all of that: loads fast on a phone, one big Book button up top, reviews right next to it.\n\nStill live: https://sodaspot.mauifoodtruckwebsites.com\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: the demo comes down July 21. Low pressure, easy next step.",
+    "subject": "Heads up: the demo comes down July 21",
+    "body": "Aloha,\n\nQuick heads up: I keep demo sites live for a few weeks, then take them down. SoDaSpot's comes down July 21.\n\nNo pressure at all. If the timing is bad, just say so and I can hold it a little longer. If you want it, making it yours takes about a day, $49/mo, and you edit everything from your phone: menu, prices, sold-out flavors, photos.\n\nOne more look: https://sodaspot.mauifoodtruckwebsites.com\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, July 21. No hard feelings, door stays open.",
+    "subject": "Taking the demo down tomorrow",
+    "body": "Aloha,\n\nLast note from me, promise. The SoDaSpot demo comes down tomorrow, July 21.\n\nIf now is not the right time, no hard feelings at all. You've built something really fun, and I'll keep cheering from the next grad party either way.\n\nIf you ever want it back, one text and I can have it live again in about a day. The door stays open.\n\nhttps://sodaspot.mauifoodtruckwebsites.com (until tomorrow)\n\n(808) 658-0487, or just reply here.\n\nMahalo for letting me nerd out on your menu,\nTanner\nFrontline Web Designs"
+   }
+  ]
+ },
+ {
+  "business": "The Outrigger Pizza Company",
+  "demo_url": "https://outriggerpizza.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": null,
+   "email": null,
+   "phone": "(808) 280-2985",
+   "instagram": "@outriggerpizzamaui",
+   "source": "Phone: outriggerpizzas.com/contact (Pizza Orders 808-280-2985, Catering 808-740-5414); fetched 2026-07-06 and independently re-fetched by reviewer 2026-07-06, both numbers confirmed. Instagram: repo C:/dev/outrigger-pizza/ig_profile.json (Bright Data scrape of instagram.com/outriggerpizzamaui, account field matches). Owner name and email: not found on the site contact page (reviewer re-checked: no email, no name), IG bio, Food Network/DDD/Flavortown pages, or repo recon.md/BRIEF.md, so left null."
+  },
+  "missing": [
+   "business email (site contact page says to email but shows no address)",
+   "owner first name (a search snippet claimed 'Kevin Laut' but no fetched page confirmed it, so not recorded)",
+   "address conflict to confirm before publishing: IG bio and the demo say 1819 S Kihei Rd, Yelp and Restaurantji say 20 Alahele Pl",
+   "exact current Google rating (recon batch said 4.4/604, unconfirmed)",
+   "whether the truck actually moves locations (BRIEF flags the site's Schedule page as unverified; recon and the demo show one fixed Kihei spot, so truck-movement claims were removed from the copy)"
+  ],
+  "email": {
+   "subject": "went ahead and built Outrigger Pizza a website (it's live)",
+   "body": "Aloha Outrigger Pizza crew,\n\nTanner here, solo web guy on Maui (Frontline Web Designs). Guy Fieri put you on Triple D and your current site kind of buries that. Felt wrong, so I built you a new one. It is live right now:\n\nhttps://outriggerpizza.mauifoodtruckwebsites.com\n\nTriple D front and center, your real pies, your hours, and the Hopper order button up top where hungry people actually look. If you like it, it becomes yours: the LIVE plan is $49/mo and includes a board you update from your phone (hours, specials, sold out pies) so customers always know what's on before they drive over.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs, frontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha, tanner here, local web designer on maui. i went ahead and built outrigger a new site, triple d cred up top and the order button where it belongs: https://outriggerpizza.mauifoodtruckwebsites.com. if you like it it's yours, $49/mo, and you update your hours, specials, and sold-out pies right from your phone. text me anytime, (808) 658-0487 🤙",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "One concrete fix: the current Squarespace site hides the Triple D feature and has no order button above the fold; the demo puts the badge, hours, and Hopper ordering first.",
+    "subject": "the order button thing",
+    "body": "Aloha again,\n\nQuick follow up on the demo I sent over: https://outriggerpizza.mauifoodtruckwebsites.com\n\nOne specific thing it fixes. On your current site, there is no order button above the fold, and the Guy Fieri feature is nowhere near the top. On the demo, the Triple D badge, your hours (Mon to Sat, 11am to 8:30pm), and the Hopper order button are the first things they see. That is what turns a beach-hungry visitor into an order.\n\nHappy to walk you through it in five minutes. Reply here or text (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: the demo comes down July 21, 2026. First mention of the takedown date, low pressure.",
+    "subject": "heads up: the demo comes down July 21",
+    "body": "Aloha,\n\nNo pressure, just a heads up: the Outrigger demo (https://outriggerpizza.mauifoodtruckwebsites.com) comes down on July 21. I build these on my own dime, so I only keep them live a few weeks.\n\nIf you want it, it is basically ready: your pies, your hours, the Triple D cred where it belongs, plus the $49/mo LIVE plan so you can update the board from your phone any time hours change or a pie sells out.\n\nIf now is not the right time, no worries at all. Reply here or text (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow (July 21). No hard feelings, door stays open.",
+    "subject": "last call, demo comes down tomorrow",
+    "body": "Aloha,\n\nLast note from me, promise. The demo at https://outriggerpizza.mauifoodtruckwebsites.com comes down tomorrow, July 21.\n\nIf you want to keep it, reply or text me today at (808) 658-0487 and I will hold it and get it moved over to your domain.\n\nIf not, no hard feelings. You folks make some of the best wood-fired pizza on the island, and the door stays open whenever a new site makes sense. I am right here on Maui.\n\nMahalo,\nTanner\nFrontline Web Designs"
+   }
+  ]
+ },
+ {
+  "business": "Thai Mee Up",
+  "demo_url": "https://thaimeeup.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": "Tom",
+   "email": "thaimeeup808@gmail.com",
+   "phone": "(808) 214-3369",
+   "instagram": "@thai_mee_up",
+   "source": "Phone (Kahului truck) and Instagram: repo recon at C:/dev/thai-mee-up/BRIEF.md and recon.md, pulled from the IG bio, marked verified. Email: not in the repo (recon says not found); independently verified 2026-07-06 on the BringFido listing bringfido.com/restaurant/111826, which shows thaimeeup808@gmail.com alongside the same verified Kahului phone (808) 214-3369 and 591 Haleakala Hwy address (page 403s to direct fetch; confirmed via exact-match search snippet from bringfido.com). Owner: Chef Tom Sribura per Diners, Drive-Ins and Dives (repo recon, flagged likely, spelling unconfirmed)."
+  },
+  "missing": [
+   "Owner name confirmation (Chef Tom Sribura is from the Diners, Drive-Ins and Dives feature; repo recon flags spelling as unconfirmed)",
+   "Kula truck hours (not listed anywhere; IG says 10am to 8pm for Kahului but TripAdvisor says 10am to 7pm)",
+   "Exact Google rating and review count (TripAdvisor 4.7/153 and Yelp ~1,150 reviews are verified instead)"
+  ],
+  "email": {
+   "subject": "Built Thai Mee Up a website, it is already live",
+   "body": "Aloha Tom,\n\nI'm Tanner, I build websites for Maui businesses (Frontline Web Designs). Thai Mee Up got featured on Diners, Drive-Ins and Dives and holds a 4.7 on TripAdvisor, yet when someone Googles you there is no website, just scattered listings that do not even agree on your hours.\n\nSo I built one. It is live right now at https://thaimeeup.mauifoodtruckwebsites.com\n\nIf you like it, it is yours. The LIVE plan is $49/mo and includes a board you update from your phone: today's spot for each truck, hours, and sold-out items, so customers always know where to find you.\n\nNo pressure either way. Reply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs\nfrontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha thai mee up! i build websites for maui food trucks and could not believe you have a ddd feature and a 4.7 on tripadvisor but no website. so i already built you one, live right now: https://thaimeeup.mauifoodtruckwebsites.com. if you like it, it is yours. text tanner at (808) 658-0487",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: three trucks with conflicting hours online and no website; the demo's live location board solves the 'where is the truck today' problem",
+    "subject": "Three trucks, three different hours online",
+    "body": "Aloha Tom,\n\nQuick follow-up. Right now your hours show up differently depending on where people look (Instagram says 10 to 8, TripAdvisor says 10 to 7), and with trucks in Kahului, Kula, and Kihei, folks are guessing which one is open before they drive over.\n\nThat is exactly what the demo fixes. The front of the site is a live board: each truck, where it is today, hours, and anything sold out. You update it from your phone in about ten seconds.\n\nTake a look: https://thaimeeup.mauifoodtruckwebsites.com\n\nReply here or text me at (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: the demo comes down July 21",
+    "subject": "The Thai Mee Up demo comes down July 21",
+    "body": "Aloha Tom,\n\nJust a heads up. I only keep demo sites online for a couple of weeks, and the one I built for Thai Mee Up comes down July 21.\n\nIt is still live here: https://thaimeeup.mauifoodtruckwebsites.com\n\nIf now is not the right time, no worries at all. But if you want it, it is $49/mo and I will have it on your own domain within a couple of days, with the live location board you run from your phone.\n\nReply here, or text or call (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, no hard feelings, door stays open",
+    "subject": "Last call, the demo comes down tomorrow",
+    "body": "Aloha Tom,\n\nThe demo site I built for Thai Mee Up comes down tomorrow, July 21. Last chance to see it: https://thaimeeup.mauifoodtruckwebsites.com\n\nIf it is a no, no hard feelings. I will take it down and wish you a busy summer, you folks clearly have no shortage of fans. And if you ever want a website down the road, the door stays open. Just text me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs"
+   }
+  ]
+ },
+ {
+  "business": "Da Green Coffee Bar",
+  "demo_url": "https://dagreen.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": "Alison",
+   "email": "contact.dagreencoffee@gmail.com",
+   "phone": "(808) 856-0025",
+   "instagram": "@dagreencoffeemaui",
+   "source": "Email and Instagram: repo C:/dev/da-green-coffee/index.html contact section; both re-confirmed live on southmauigardens.com/dagreen-coffee (fetched 2026-07-06). Phone: index.html and README; README sources it to TripAdvisor and flags it unconfirmed as the bar's direct line. Owner first name Alison: guest review on mauihappyhours.net/2025/12/26/da-green-coffee-maui-happy-hour naming 'Alison and Kieth' as the owners (re-fetched 2026-07-06; last names not found; the review spells it 'Kieth')."
+  },
+  "missing": [
+   "Owner last names (first names come only from a guest review on mauihappyhours.net, which spells them 'Alison and Kieth'; not confirmed by the business)",
+   "Confirmation that (808) 856-0025 is the bar's direct line (number came from TripAdvisor; repo README flags it unconfirmed)",
+   "Current hours (repo README says listings disagree; which specific platforms differ was not verified)"
+  ],
+  "email": {
+   "subject": "I built Da Green a website (it's live right now)",
+   "body": "Aloha Alison,\n\nI'm Tanner, a web designer here on Maui (Frontline Web Designs). When I looked Da Green up, the listings showed different hours, and the closest thing to a website I found was a page on South Maui Gardens' site.\n\nSo I built you one. It's live right now: https://dagreen.mauifoodtruckwebsites.com\n\nThe macnut latte and the Blue Door sourdough toast are already on the menu. If you like it, it's yours. The LIVE plan is $49 a month: a board you update from your phone (today's hours, sold-out items, what's pouring) so customers know before they drive over.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs, frontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha! i'm tanner, local web guy here on maui. i built da green a little website, the macnut latte and the blue door toast are already on it: https://dagreen.mauifoodtruckwebsites.com. if you like it, it's yours, and if not, no worries at all.",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: online listings disagree on their hours, and no site of their own",
+    "subject": "The hours thing",
+    "body": "Aloha Alison,\n\nQuick follow-up. When I was looking Da Green up, the listings I found showed different hours. Anyone checking before a morning drive over is guessing.\n\nThe site I built fixes that: one hours block you control, plus a live board you edit from your phone. Live music in the garden, sold out of the lox toast, whatever the day brings, it's up in seconds.\n\nStill live here: https://dagreen.mauifoodtruckwebsites.com\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle heads up: the demo comes down July 21",
+    "subject": "Heads up: the demo comes down July 21",
+    "body": "Aloha Alison,\n\nNo pressure, just a heads up. I only keep demo sites up for a few weeks, and the Da Green one comes down July 21.\n\nIt's still live if you want to poke around: https://dagreen.mauifoodtruckwebsites.com\n\nIf you want it, it's $49 a month on the LIVE plan. I handle the tech side, you just edit the board from your phone. And if now isn't the season for this, all good.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, no hard feelings, door stays open",
+    "subject": "Last call, it comes down tomorrow",
+    "body": "Aloha Alison,\n\nThe Da Green demo comes down tomorrow, July 21, so this is my last note about it.\n\nOne more look if you want it: https://dagreen.mauifoodtruckwebsites.com\n\nIf the timing isn't right, no hard feelings at all. The door stays open, and if you ever want a site down the road, I can bring this one back in a day. Come say hi if you're ever curious, I'm local.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner"
+   }
+  ]
+ },
+ {
+  "business": "Home Maid Cafe",
+  "demo_url": "https://homemaid.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": "Tina",
+   "email": null,
+   "phone": "(808) 874-6035",
+   "instagram": null,
+   "source": "Phone: repo recon C:/dev/home-maid-cafe/recon.md and BRIEF.md (Google Places + Azeka IG, verified) and the demo site footer (index.html). Owner first name Tina: prideofmaui.com 'Top 10 Best Malasadas on Maui' article names Tina Cho at Home Maid Cafe in Azeka Shopping Center, Kihei; article fetched and confirmed 2026-07-06, but it is a single source and the repo recon lists owner name as a gap, so first name only in copy. Email: none found (repo recon 2026-06-21; fresh search 2026-07-06 surfaced only a homemaidbakery.com address on scraper sites, which belongs to the unrelated Home Maid Bakery in Wailuku and was excluded). Instagram: verified-negative (repo recon; only a Facebook page exists)."
+  },
+  "missing": [
+   "business email: none found (repo recon 2026-06-21, rechecked 2026-07-06); confirmed channels are phone (808) 874-6035 and their Facebook page, so the opener may need to be printed and hand-delivered or sent via Facebook Messenger",
+   "first-party Instagram: verified-negative in repo recon, so send the ig_dm as a Facebook page message instead",
+   "owner full name: Tina Cho comes from a single source (prideofmaui.com, confirmed live 2026-07-06) and the repo recon lists owner names as a gap; confirm in person before using more than the first name"
+  ],
+  "email": {
+   "subject": "Built Home Maid Cafe a website (it is already live)",
+   "body": "Aloha Tina,\n\nI'm Tanner, a web designer here on Maui (Frontline Web Designs). Your made-to-order malasadas have a real following, customers compare them to Leonard's. But when folks search for you there is no website of your own, just a maps pin.\n\nSo I built you one. It is live right now:\nhttps://homemaid.mauifoodtruckwebsites.com\n\nIf you like it, it is yours. The LIVE plan is $49/mo: a little board you edit from your phone for today's hours, specials, and when the malasadas sell out, so customers always know before they drive over.\n\nTake a look when you get a sec. Reply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs, frontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha! i'm tanner, a web designer here on maui. your malasadas came up when i was looking around kihei and i noticed you folks have no website of your own, so i went ahead and built you one: https://homemaid.mauifoodtruckwebsites.com. if you like it, it's yours. text or call me at (808) 658-0487 and i'll walk you through it.",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: 4.4 stars and 378 Google reviews but no website of their own; the demo gives searchers somewhere to land with hours, menu, and tap-to-call.",
+    "subject": "378 reviews and nowhere to send them",
+    "body": "Aloha Tina,\n\nTanner again, the Maui web guy. Quick one: 378 people took the time to leave Home Maid Cafe a Google review (4.4 stars), but anyone who searches for you finds no website of your own, just a maps pin and third-party sites with whatever info they scraped.\n\nThe demo fixes exactly that: your real hours, menu highlights, photos, and a tap-to-call button on one fast page that works on a phone.\n\nStill live here: https://homemaid.mauifoodtruckwebsites.com\n\nReply here, or text or call (808) 658-0487.\n\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: demo sites get cleared out, this one comes down July 21, 2026.",
+    "subject": "Heads up: the demo comes down July 21",
+    "body": "Aloha Tina,\n\nJust a heads up. I keep demo sites up for a few weeks, then clear them out, and the Home Maid Cafe one comes down on July 21, 2026.\n\nIf you want it, it is simple: you say the word, I point it at your own domain, and the LIVE plan is $49/mo so you can update hours, specials, and sold-out malasadas from your phone. No contracts.\n\nHere it is one more time: https://homemaid.mauifoodtruckwebsites.com\n\nText or call anytime: (808) 658-0487.\n\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, no hard feelings, door stays open.",
+    "subject": "Last call, the demo comes down tomorrow",
+    "body": "Aloha Tina,\n\nLast note from me, promise. The demo site comes down tomorrow, July 21, 2026.\n\nIf the timing is off or a website just is not a priority right now, no hard feelings at all. The door stays open, and if you ever want it back up, it takes me about a day.\n\nUp through today: https://homemaid.mauifoodtruckwebsites.com\n\nText or call (808) 658-0487 if you want to keep it.\n\nMahalo for reading these,\nTanner"
+   }
+  ]
+ },
+ {
+  "business": "Early Bird Coffee",
+  "demo_url": "https://earlybird.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": null,
+   "email": null,
+   "phone": "(808) 795-3141",
+   "instagram": "@earlybirdcoffee.maui",
+   "source": "Phone and Instagram handle verified in repo recon: C:/dev/early-bird-coffee/CLAUDE.md, plus the schema.org block (telephone +1-808-795-3141) and footer of C:/dev/early-bird-coffee/index.html; phone also corroborated in C:/dev/early-bird-coffee-sky/index.html. Yelp listing (yelp.com/biz/early-bird-coffee-kihei) appears in the site's sameAs block. Owner first name and business email were not found in either repo or in web search (Yelp, Tripadvisor, directories); left null rather than guessed. Note: repo README says to confirm the phone is current before relying on it."
+  },
+  "missing": [
+   "owner first name (not in either repo or any listing found)",
+   "business email (not in either repo, Yelp, Tripadvisor, or directories; IG DM or phone are the only verified channels)"
+  ],
+  "email": {
+   "subject": "Built you a website (blame the ube coconut coffee)",
+   "body": "Aloha, this is Tanner. I run Frontline Web Designs here on Maui, one guy, not an agency. I've been a fan since the ube coconut coffee showed up on my feed, and it bugged me that a truck this good doesn't have a website of its own.\n\nSo I built you one. It's live right now: https://earlybird.mauifoodtruckwebsites.com\n\nIf you like it, it's yours. The LIVE plan is $49 a month: a live board you update from your phone (today's hours, sold-out items) so customers know before they drive over.\n\nReply here, or text or call me at (808) 658-0487.\n\nTanner\nFrontline Web Designs, frontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha, tanner here, local web guy on maui. i liked the ube coconut coffee so much i went ahead and built you folks a website, it's live right now at https://earlybird.mauifoodtruckwebsites.com .. take a look, and if you like it, it's yours. no pressure either way, i'll be back for the croffles regardless",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: they have no site of their own, day-of hours updates only go out on Instagram and truck hours drift, so people show up when the truck is closed",
+    "subject": "Your hours, in one place people can actually find",
+    "body": "Aloha, Tanner again. Quick follow-up on the site I built for Early Bird: https://earlybird.mauifoodtruckwebsites.com\n\nRight now, when someone googles you, they land on Yelp or some directory page, and your day-of hours updates only go out on Instagram. Truck hours drift, and anyone who rolls up to 1455 S Kihei Rd on a Monday leaves without coffee.\n\nThe site fixes that: your hours, the map pin, the menu, and that 4.9 Yelp rating on one page you own. With the LIVE plan ($49 a month) you update today's hours from your phone in about ten seconds.\n\nReply here, or text or call (808) 658-0487.\n\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: the demo comes down July 21",
+    "subject": "Heads up: the demo comes down July 21",
+    "body": "Aloha, Tanner here one more time. No pressure, just a heads up: I only keep demo sites up for a couple of weeks, and the Early Bird one comes down July 21.\n\nIt's still live if you want a look: https://earlybird.mauifoodtruckwebsites.com\n\nIf you like it, it becomes yours and I handle all the technical stuff. If the timing is bad, that's fine too, just say the word and I'll hold it a little longer.\n\nReply here, or text or call (808) 658-0487.\n\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, July 21, no hard feelings, door stays open",
+    "subject": "Last call, it comes down tomorrow",
+    "body": "Aloha, Tanner one last time, I promise. The Early Bird demo comes down tomorrow, July 21: https://earlybird.mauifoodtruckwebsites.com\n\nIf you want it, reply or text me today at (808) 658-0487 and I'll keep it live and make it yours. If not, no hard feelings at all, I'll keep buying the ube coconut either way.\n\nThe door stays open if you ever want a website down the road.\n\nTanner\nFrontline Web Designs, frontlinewebdesign.tech"
+   }
+  ]
+ },
+ {
+  "business": "First Wave Coffee",
+  "demo_url": "https://firstwave.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": null,
+   "email": null,
+   "phone": "(808) 283-6799",
+   "instagram": "@firstwavecoffeemaui",
+   "source": "Instagram: verified in repo code (C:/dev/first-wave-coffee/index.html CONFIG block and schema.org sameAs both point to instagram.com/firstwavecoffeemaui; the sibling repo C:/dev/first-wave-coffee-sky/index.html also references the @firstwavecoffeemaui IG bio). Phone: NOT in either repo (the README explicitly notes no public number was found during the build); re-verified independently on 2026-07-06 by fetching the Yahoo Local listing (local.yahoo.com/info-234664270-First-Wave-Coffee), which lists (808) 283-6799 at 214 Hookele St, Kahului HI 96732. Owner: null; the name 'Jansen Opiana' surfaced only in AI-generated search summaries and could not be confirmed anywhere. Email: null; none in the repos or any listing. Facts used in the copy, verified in the repo: Shore Break latte is macadamia nut plus white chocolate and their most-ordered (index.html menu section); hours Tue to Sat 7:30am to 3pm with a 1:30pm Wednesday close, computed in Hawaii time (schema.org block and FAQ); trailer hours shift with the surf and season with updates on Instagram (FAQ copy); no official website exists (README calls the build an unofficial concept for that reason); directory sources disagree on the street number, 176 vs 214 Hookele St (README confirm-before-official checklist). The demo URL returned HTTP 200 on 2026-07-06. Dropped from the earlier source note: 5.0 stars across 267 Google reviews (Wanderlog), unverified and unused in the copy."
+  },
+  "missing": [
+   "owner name (the name 'Jansen Opiana' surfaced only in unverifiable AI search summaries; confirm at the window or via IG before using a name)",
+   "business email (none published anywhere found)",
+   "Facebook / TikTok (existence unconfirmed)",
+   "exact street number (listings split between 176 and 214 Hookele St)"
+  ],
+  "email": {
+   "subject": "Built a website for First Wave Coffee (it is already live)",
+   "body": "Aloha First Wave crew,\n\nTanner here, a Maui web designer (Frontline Web Designs). I'm a Shore Break guy: mac nut plus white chocolate earns its spot as your most-ordered for a reason.\n\nYou folks don't have a website of your own right now (Instagram is doing all the work), so I went ahead and built one. It is live right now at https://firstwave.mauifoodtruckwebsites.com\n\nIf you like it, it is yours. The LIVE plan is $49 a month and comes with a live board you edit from your phone: today's spot, hours, sold-out items. Customers always know where the trailer is.\n\nReply here, or text or call me at (808) 658-0487.\n\nMahalo,\nTanner\nFrontline Web Designs\nfrontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha! big fan of the shore break. i build websites for maui food trucks and already made one for you guys, it's live right now: https://firstwave.mauifoodtruckwebsites.com. if you like it, it's yours. dm me back or text tanner at (808) 658-0487 🤙",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: no official site, and directory listings can't even agree on the address (176 vs 214 Hookele), so new customers are guessing",
+    "subject": "Google shows two different addresses for your trailer",
+    "body": "Aloha again,\n\nQuick one. When someone searches First Wave Coffee right now there is no official site, just directory pages, and they don't agree on your address (some say 176 Hookele, some say 214). Anyone new to the island is left guessing where the trailer actually is.\n\nThe demo fixes that: one official page with the right spot, your Tue to Sat hours in Hawaii time, and an open or closed sign that updates itself. Take a look: https://firstwave.mauifoodtruckwebsites.com\n\nFive minutes on the phone and I can walk you through it. Text or call (808) 658-0487, or just reply here.\n\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: the demo comes down July 21, plus a one-line recap of the $49/mo LIVE plan",
+    "subject": "Heads up: your demo site comes down July 21",
+    "body": "Aloha,\n\nNo pressure, just a heads up. The demo I built for you comes down on July 21. I keep demo sites up for a couple of weeks, then clear them out for the next build.\n\nIf you want it, it is yours before then: https://firstwave.mauifoodtruckwebsites.com. The LIVE plan is $49 a month and covers hosting plus the live board you run from your phone (today's spot, hours, sold-out items).\n\nIf it is not for you, no worries at all. A reply either way helps me plan.\n\nTanner\n(808) 658-0487"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, no hard feelings, door stays open",
+    "subject": "Taking the First Wave demo down tomorrow",
+    "body": "Aloha,\n\nLast note from me, promise. The First Wave demo comes down tomorrow, July 21: https://firstwave.mauifoodtruckwebsites.com\n\nIf the timing is just bad, say the word and I'll hold it a little longer. If it is a no, no hard feelings, I'll still be in line for a Shore Break. The door stays open whenever you folks decide you want a website.\n\nText or call anytime: (808) 658-0487.\n\nMahalo,\nTanner"
+   }
+  ]
+ },
+ {
+  "business": "Mo ʻOno Hawaiʻi",
+  "demo_url": "https://moono.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": "Toni & Kuʻulei",
+   "email": null,
+   "phone": "(808) 633-0470",
+   "instagram": "@moonohawaii",
+   "source": "Owner first names (Toni and Kuʻulei, founders) from the story section of the demo repo (C:/dev/MoonoAcaiBowl/index.html). Phone from the repo's Find Us section and footer (tel:+18086330470), independently confirmed on their Yelp and Wanderlog listings. Instagram handle from the repo footer and social section (instagram.com/moonohawaii). The previously drafted gmail address was removed: it appears nowhere in either repo and the cited bizarchive.com cfemail decode could not be reproduced or confirmed on any quotable public page."
+  },
+  "missing": [
+   "email address (the drafted moonohawaii@gmail.com only surfaced in third-party aggregator snippets and could not be confirmed in the repo or on any quotable source, so it was dropped; use IG DM or the business phone as the first channel, or confirm the email by asking)",
+   "owner last names",
+   "a direct personal email for Toni or Kuʻulei"
+  ],
+  "email": {
+   "subject": "built you guys a new website (it's already live)",
+   "body": "Aloha Toni and Kuʻulei,\n\nTanner here, solo web designer on Maui (Frontline Web Designs). Big fan of the truck, the liliko'i butter is unreal.\n\nQuick thing I noticed: moonohawaii.com is sitting basically empty, no menu, no photos, not even a description. You've got 4.8 stars and hundreds of reviews doing nothing for you there.\n\nSo I built you a new site. It's live right now:\nhttps://moono.mauifoodtruckwebsites.com\n\nIf you like it, it's yours. The LIVE plan is $49 a month: a board you update from your phone (hours, sold-out toppings, weekend schedule) so customers always know when you're open.\n\nReply here, or text or call me: (808) 658-0487.\n\nMahalo,\nTanner"
+  },
+  "ig_dm": "aloha! tanner here, maui web guy. noticed moonohawaii.com is sitting basically empty, so i went ahead and built you guys a fresh site, it's live right now: https://moono.mauifoodtruckwebsites.com. if you like it, it's yours. no pressure either way, the bowls speak for themselves.",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: weekend hours basically only live on Instagram, and moonohawaii.com is empty. The plan's phone-editable live board fixes both.",
+    "subject": "the weekend hours thing",
+    "body": "Aloha Toni and Kuʻulei,\n\nTanner again. One specific thing the new site fixes: weekend hours pretty much only live on Instagram right now, so anyone who Googles the truck on a Saturday is guessing. And moonohawaii.com gives them nothing: no menu, no photos, no hours.\n\nThe $49 plan comes with a live board for hours and sold-out toppings that you update from your phone in about ten seconds. No waiting on a web guy.\n\nTake a look when you get a breather: https://moono.mauifoodtruckwebsites.com\n\nHappy to walk you through it. Text or call: (808) 658-0487.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle urgency: the demo comes down July 21, 2026.",
+    "subject": "moono demo comes down july 21",
+    "body": "Aloha Toni and Kuʻulei,\n\nQuick heads up: I only keep demo sites up for a couple weeks, so the Mo ʻOno one comes down July 21, 2026.\n\nIt's here until then: https://moono.mauifoodtruckwebsites.com\n\nIf now's not the season for it, all good. If you want it, just reply or text me at (808) 658-0487 and I'll move it over to you. $49 a month, cancel whenever.\n\nMahalo,\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, July 21, no hard feelings, door stays open.",
+    "subject": "last one, demo comes down july 21",
+    "body": "Aloha Toni and Kuʻulei,\n\nThe demo site comes down tomorrow, July 21, so this is the last note from me, promise.\n\nOne more look if you want it: https://moono.mauifoodtruckwebsites.com\n\nIf the timing's wrong, no hard feelings at all. The door stays open if you ever want a site later, and I'll still be in line for a large with liliko'i butter either way.\n\nText or call anytime: (808) 658-0487.\n\nMahalo,\nTanner"
+   }
+  ]
+ },
+ {
+  "business": "Aloha Ice Cream",
+  "demo_url": "https://alohaicecream.mauifoodtruckwebsites.com",
+  "contact": {
+   "owner": "Chong family (surname from BRIEF.md, which quotes the IG rebrand post slide 'We are the Chong's!'; corroborated by tagged user Pele Chong, @pelemariechong, on that post in ig_carousels.json; first names not confirmed)",
+   "email": "Alohaicecreamhawaii@gmail.com",
+   "phone": null,
+   "instagram": "@alohaicecream",
+   "source": "Repo recon at C:/dev/aloha-ice-cream. Email: recon.md line 36 and BRIEF.md line 24 (verified on alohaicecream.com), used in index.html demo footer. Instagram: ig_profile.json, Bright Data instagram_profiles scrape (2,763 followers, 299 posts). Owner surname: BRIEF.md plus the Pele Chong tag on the rebrand post in ig_carousels.json; the scraped caption itself names no surname. Phone: confirmed none published anywhere (recon.md and BRIEF.md; site is form and email only)."
+  },
+  "missing": [
+   "phone (none published anywhere; site takes inquiries via form and email only)",
+   "owner first names (surname Chong per BRIEF.md and a tagged user on the rebrand post; the scraped caption does not restate it, so confirm with the owner before using the family name in any copy)"
+  ],
+  "email": {
+   "subject": "I built Aloha Ice Cream a website (it's already live)",
+   "body": "Aloha! Tanner here, I'm a web designer on Maui (Frontline Web Designs). Congrats on the rebrand, saw the post that Choke Ice Cream is now Aloha Ice Cream, and those Lavender Pineapple cups up at the Kula lavender farm look unreal.\n\nI went ahead and built you a demo website. It's live right now:\nhttps://alohaicecream.mauifoodtruckwebsites.com\n\nIf you like it, it becomes yours. The LIVE plan is $49 a month and includes a live board you edit from your phone: where the cart is today, hours, sold-out flavors. Customers always know where to find you.\n\nReply here, or text or call me at (808) 658-0487.\n\nTanner\nFrontline Web Designs\nfrontlinewebdesign.tech"
+  },
+  "ig_dm": "aloha! love the rebrand post, the lavender pineapple cups at the kula farm look so good. i actually went ahead and built you guys a website, it's live at https://alohaicecream.mauifoodtruckwebsites.com. if you like it it's yours, and if not no worries at all",
+  "followups": [
+   {
+    "day": 3,
+    "angle": "Concrete fix: current site still shows old Choke branding and links the deleted @chokeicecream account; demo is fully rebranded",
+    "subject": "your site still links the old Choke account",
+    "body": "Aloha, Tanner again. One thing I noticed while building your demo: your current site still shows the old Choke Ice Cream cups and links to @chokeicecream, which is deleted now, so that link goes nowhere. The demo I built is fully rebranded: your new Aloha logo, the new photos from your IG, the right links, and it loads fast on a phone.\n\nTake a look when you get a sec: https://alohaicecream.mauifoodtruckwebsites.com\n\nReply here or text me at (808) 658-0487 and I can have it on your own domain this week.\n\nTanner"
+   },
+   {
+    "day": 7,
+    "angle": "Gentle deadline: demo comes down July 21, restate the $49/mo LIVE plan",
+    "subject": "demo comes down July 21",
+    "body": "Aloha! Just a heads up, I keep demo sites up for a few weeks and then retire them, so the Aloha Ice Cream demo comes down July 21, 2026.\n\nStill live here: https://alohaicecream.mauifoodtruckwebsites.com\n\nIf it's not the right season for this, all good. If you want it, reply or text me at (808) 658-0487 and I'll move it over to your domain before then. $49 a month, and you get the live board you update from your phone (today's spot, hours, sold-out flavors), so customers always know where the cart is.\n\nTanner"
+   },
+   {
+    "day": 14,
+    "angle": "Last call: demo comes down tomorrow, no hard feelings, door stays open",
+    "subject": "last call, demo comes down tomorrow",
+    "body": "Aloha, last note from me, promise. The demo site comes down tomorrow (July 21, 2026): https://alohaicecream.mauifoodtruckwebsites.com\n\nIf the timing isn't right, no hard feelings at all. The door stays open, and if you ever want a site down the road, just reply or text me at (808) 658-0487 and I'll build it back for you.\n\nCongrats again on the rebrand. Wishing you guys a busy summer.\n\nTanner\nFrontline Web Designs"
+   }
+  ]
+ }
+]
