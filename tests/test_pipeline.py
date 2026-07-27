@@ -33,6 +33,37 @@ def test_run_daily_builds_ranked_batch(monkeypatch):
     # persisted + never-repeat
     assert len(store.todays_batch(conn, "2026-06-19")) == 2
 
+def test_every_audited_business_is_marked_seen(monkeypatch):
+    """The whole reason the daily task never finished: only the drafted leads were
+    persisted, so filter_unseen shrank by batch_size while the audit loop paid for the
+    entire universe every run. Audited-but-not-drafted must still count as seen."""
+    conn = store.connect(":memory:"); store.init_db(conn)
+    candidates = [Business(place_id=f"p{i}", name=f"B{i}", website="", review_count=1)
+                  for i in range(5)]
+    monkeypatch.setattr(pipeline, "discover_all", lambda cfg, key: candidates)
+    # p0 scores 0 (clean), the rest score; batch_size 2 means only 2 get drafted.
+    monkeypatch.setattr(pipeline, "audit_one", lambda b, config, current_year=None:
+                        Findings() if b.place_id == "p0" else Findings(no_website=True))
+
+    leads = pipeline.run_daily(conn, CFG, api_key="k", run_date="2026-06-19")
+    assert len(leads) == 2                                  # only batch_size drafted
+    assert store.filter_unseen(conn, candidates) == []      # but all 5 are seen
+    assert pipeline.run_daily(conn, CFG, api_key="k", run_date="2026-06-20") == []
+
+def test_audits_per_run_caps_the_audit_loop(monkeypatch):
+    conn = store.connect(":memory:"); store.init_db(conn)
+    candidates = [Business(place_id=f"q{i}", name=f"B{i}", website="", review_count=1)
+                  for i in range(10)]
+    monkeypatch.setattr(pipeline, "discover_all", lambda cfg, key: candidates)
+    audited = []
+    def fake_audit(b, config, current_year=None):
+        audited.append(b.place_id); return Findings(no_website=True)
+    monkeypatch.setattr(pipeline, "audit_one", fake_audit)
+
+    pipeline.run_daily(conn, dict(CFG, audits_per_run=3), api_key="k", run_date="2026-06-19")
+    assert len(audited) == 3                                # capped, not all 10
+    assert len(store.filter_unseen(conn, candidates)) == 7  # rest stay for tomorrow
+
 def test_run_daily_skips_already_seen(monkeypatch):
     conn = store.connect(":memory:"); store.init_db(conn)
     store.upsert_business(conn, Business(place_id="p1", name="Seen"))

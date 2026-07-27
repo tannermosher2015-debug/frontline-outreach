@@ -76,13 +76,24 @@ def is_seen(conn, place_id):
 def filter_unseen(conn, businesses):
     return [b for b in businesses if not is_seen(conn, b.place_id)]
 
-def save_lead(conn, lead, run_date):
-    upsert_business(conn, lead.business)
+def save_audit(conn, business, findings, score, summary, run_date):
+    """Persist one audited business the moment its audit finishes.
+
+    Called for EVERY business audited, not just the ones that make the batch. That is
+    what makes filter_unseen actually shrink: before this, only the batch_size leads
+    were ever written, so each run re-audited the whole ~500-business universe (1-2h)
+    and a kill at any point threw all of it away.
+    """
+    upsert_business(conn, business)
     conn.execute(
         "INSERT INTO audits (business_id,run_date,findings,score,summary) VALUES (?,?,?,?,?)",
-        (lead.business.place_id, run_date,
-         json.dumps(lead.findings.fired()), lead.score, lead.summary),
+        (business.place_id, run_date, json.dumps(findings.fired()), score, summary),
     )
+    conn.commit()
+
+def save_draft(conn, lead):
+    # Re-upserts because the business may have picked up socials after its audit row landed.
+    upsert_business(conn, lead.business)
     conn.execute(
         """INSERT INTO outreach
            (business_id,channel,subject,draft_text,created_at,send_status)
@@ -90,6 +101,10 @@ def save_lead(conn, lead, run_date):
         (lead.business.place_id, lead.channel, lead.subject, lead.draft, _now()),
     )
     conn.commit()
+
+def save_lead(conn, lead, run_date):
+    save_audit(conn, lead.business, lead.findings, lead.score, lead.summary, run_date)
+    save_draft(conn, lead)
 
 def todays_batch(conn, run_date):
     cur = conn.execute(

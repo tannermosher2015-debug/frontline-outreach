@@ -1,4 +1,5 @@
 batch_size = 10
+audits_per_run = 60            # live HTTP audits per run (~4s each); keeps a run under ~10 min
 weak_google_threshold = 15
 daily_email_cap = 3            # warmup for the new mauiwebguy.com domain; ramp toward 10 over 1-2 weeks
 followup_after_days = 4        # send one gentle follow-up this many days after the cold email

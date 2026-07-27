@@ -43,12 +43,17 @@ def run_daily(conn, config, api_key, run_date=None):
     for b in candidates:
         if b.place_id and b.place_id not in seen_ids:
             seen_ids.add(b.place_id); unique.append(b)
-    fresh = store.filter_unseen(conn, unique)
+    # Cap the audits per run. Each audit is a live HTTP fetch (~4s), and the unseen pool
+    # starts at the whole ~500-business universe, so an uncapped run took 1-2 hours and
+    # never survived a sleep/unplug. Capped, a run finishes in minutes and works through
+    # the backlog a slice at a time, since every audit below is persisted as it lands.
+    fresh = store.filter_unseen(conn, unique)[: config.get("audits_per_run", 60)]
 
     scored = []
     for b in fresh:
         findings = audit_one(b, config)
         sc, summary = score.score_findings(findings, weights)
+        store.save_audit(conn, b, findings, sc, summary, run_date)
         if sc <= 0:
             continue
         scored.append((b, findings, sc, summary))
@@ -65,5 +70,5 @@ def run_daily(conn, config, api_key, run_date=None):
         lead = Lead(business=b, findings=findings, score=sc, summary=summary,
                     channel=channel, subject=subject, draft=body)
         leads.append(lead)
-        store.save_lead(conn, lead, run_date)
+        store.save_draft(conn, lead)  # audit row already written above
     return leads
